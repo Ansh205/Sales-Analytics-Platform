@@ -1,80 +1,102 @@
+-- ============================================
+-- Sales Analytics Platform Database Schema
+-- ============================================
+
+-- Drop tables if they already exist
+DROP TABLE IF EXISTS orders CASCADE;
+DROP TABLE IF EXISTS returns CASCADE;
+DROP TABLE IF EXISTS people CASCADE;
+
+-- ============================================
+-- Orders Table
+-- ============================================
+
 CREATE TABLE orders (
 
-    row_id INTEGER,
+    row_id              INTEGER PRIMARY KEY,
 
-    order_id VARCHAR(30),
+    order_id            VARCHAR(25) NOT NULL,
 
-    order_date DATE,
+    order_date          DATE NOT NULL,
 
-    ship_date DATE,
+    ship_date           DATE NOT NULL,
 
-    ship_mode VARCHAR(50),
+    ship_mode           VARCHAR(50) NOT NULL,
 
-    customer_id VARCHAR(30),
+    customer_id         VARCHAR(25) NOT NULL,
 
-    customer_name VARCHAR(150),
+    customer_name       VARCHAR(120) NOT NULL,
 
-    segment VARCHAR(50),
+    segment             VARCHAR(40) NOT NULL,
 
-    country_region VARCHAR(100),
+    country_region      VARCHAR(80) NOT NULL,
 
-    city VARCHAR(100),
+    city                VARCHAR(80) NOT NULL,
 
-    state_province VARCHAR(100),
+    state_province      VARCHAR(80) NOT NULL,
 
-    postal_code VARCHAR(20),
+    postal_code         VARCHAR(20),
 
-    region VARCHAR(50),
+    region              VARCHAR(40) NOT NULL,
 
-    product_id VARCHAR(50),
+    product_id          VARCHAR(30) NOT NULL,
 
-    category VARCHAR(50),
+    category            VARCHAR(40) NOT NULL,
 
-    sub_category VARCHAR(50),
+    sub_category        VARCHAR(50) NOT NULL,
 
-    product_name TEXT,
+    product_name        TEXT NOT NULL,
 
-    sales NUMERIC,
+    sales               NUMERIC(12,2) NOT NULL,
 
-    quantity INTEGER,
+    quantity            INTEGER NOT NULL,
 
-    discount NUMERIC,
+    discount            NUMERIC(5,2) NOT NULL,
 
-    profit NUMERIC,
+    profit              NUMERIC(12,2) NOT NULL,
 
-    order_year INTEGER,
+    order_year          INTEGER,
 
-    order_month VARCHAR(20),
+    order_month         VARCHAR(20),
 
-    order_quarter INTEGER,
+    order_quarter       INTEGER,
 
-    order_week INTEGER,
+    order_week          INTEGER,
 
-    order_day VARCHAR(20),
+    order_day           VARCHAR(20),
 
-    shipping_days INTEGER,
+    shipping_days       INTEGER,
 
-    profit_margin NUMERIC,
+    profit_margin       NUMERIC(10,4),
 
-    sales_bucket VARCHAR(30),
+    sales_bucket        VARCHAR(30),
 
-    profit_bucket VARCHAR(30)
+    profit_bucket       VARCHAR(30)
 
 );
+
+-- ============================================
+-- Returns Table
+-- ============================================
 
 CREATE TABLE returns (
 
-    returned VARCHAR(20),
+    return_id SERIAL PRIMARY KEY,
 
-    order_id VARCHAR(30)
+    returned VARCHAR(10) NOT NULL,
+
+    order_id VARCHAR(25) NOT NULL
 
 );
 
+-- ============================================
+-- People Table
+-- ============================================
 
 CREATE TABLE people (
 
-    region VARCHAR(100),
+    region              VARCHAR(40) PRIMARY KEY,
 
-    person VARCHAR(100)
+    regional_manager    VARCHAR(120) NOT NULL
 
 );
