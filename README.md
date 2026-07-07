@@ -1,41 +1,73 @@
 # Sales Analytics Platform
 
-## Project Overview
+## Overview
 
-This project is an end-to-end Sales Analytics Platform built using:
+Sales Analytics Platform is an end-to-end Business Intelligence project built using Python, PostgreSQL, SQL, Power BI, FastAPI, Docker, and GitHub.
 
-- Python
-- PostgreSQL
-- SQL
-- Power BI
-- FastAPI
-- Docker
+The project automates data cleaning, imports cleaned datasets into PostgreSQL, creates SQL reporting views, and visualizes business insights using Power BI.
 
-## Features
-
-- Executive Dashboard
-- Customer Dashboard
-- Product Dashboard
-- Profit Analysis
-- Regional Analysis
-- Forecasting
-- Drill-through Reports
-- Power BI Embedded
-- REST APIs
-- Cloud Deployment
+---
 
 ## Tech Stack
 
 - Python
 - Pandas
 - PostgreSQL
+- SQLAlchemy
 - SQL
 - Power BI
 - FastAPI
 - Docker
-- Git
 - GitHub
 
-## Project Status
+---
 
-🚧 Phase 1 – Project Setup & Data Understanding
+## Architecture
+
+Global Superstore Dataset
+
+↓
+
+Python ETL
+
+↓
+
+PostgreSQL
+
+↓
+
+SQL Views
+
+↓
+
+Power BI
+
+↓
+
+FastAPI
+
+↓
+
+Deployment
+
+---
+
+## Features
+
+- Automated ETL
+- Data Cleaning
+- Feature Engineering
+- PostgreSQL Integration
+- SQL Views
+- Business SQL Queries
+- Database Validation
+- Executive Dashboard
+- Customer Dashboard
+- Product Dashboard
+- Region Dashboard
+- Profit Dashboard
+- Forecast Dashboard
+
+---
+
+## Folder Structure

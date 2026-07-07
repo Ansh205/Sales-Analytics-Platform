@@ -1,0 +1,85 @@
+Table orders {
+
+  row_id integer [pk]
+
+  order_id varchar
+
+  order_date date
+
+  ship_date date
+
+  ship_mode varchar
+
+  customer_id varchar
+
+  customer_name varchar
+
+  segment varchar
+
+  country_region varchar
+
+  city varchar
+
+  state_province varchar
+
+  postal_code varchar
+
+  region varchar
+
+  product_id varchar
+
+  category varchar
+
+  sub_category varchar
+
+  product_name text
+
+  sales decimal
+
+  quantity integer
+
+  discount decimal
+
+  profit decimal
+
+  order_year integer
+
+  order_month varchar
+
+  order_quarter integer
+
+  order_week integer
+
+  order_day varchar
+
+  shipping_days integer
+
+  profit_margin decimal
+
+  sales_bucket varchar
+
+  profit_bucket varchar
+
+}
+
+Table returns {
+
+  return_id integer [pk]
+
+  order_id varchar
+
+  returned varchar
+
+}
+
+Table people {
+
+  region varchar [pk]
+
+  regional_manager varchar
+
+}
+
+Ref: returns.order_id > orders.order_id
+
+Ref: orders.region > people.region
