@@ -7,35 +7,43 @@ Phase 2
 """
 
 from load_data import DataLoader
+from clean_data import DataCleaner
+from feature_engineering import FeatureEngineer
 
 
 def main():
 
     print("=" * 60)
-    print("Sales Analytics Platform")
-    print("ETL Pipeline Started")
+    print("Sales Analytics Platform ETL")
     print("=" * 60)
 
-    dataset_path = "../data/raw/Global_Superstore.xls"
+    loader = DataLoader("../data/raw/Global_Superstore.xls")
 
-    loader = DataLoader(dataset_path)
+    cleaner = DataCleaner()
 
-    print("\nLoading Dataset...\n")
+    engineer = FeatureEngineer()
 
     orders, returns, people = loader.load_all()
 
-    print("Dataset Loaded Successfully\n")
+    print("\nOriginal Shape")
 
-    print(f"Orders Shape  : {orders.shape}")
-    print(f"Returns Shape : {returns.shape}")
-    print(f"People Shape  : {people.shape}")
+    print(orders.shape)
 
-    print("\nColumns in Orders:\n")
+    orders = cleaner.clean_orders(orders)
 
-    for column in orders.columns:
-        print(column)
+    orders = engineer.create_features(orders)
 
-    print("\nETL Step 1 Completed")
+    print("\nFinal Shape")
+
+    print(orders.shape)
+
+    print("\nNew Columns Added")
+
+    print(orders.columns.tolist()[-7:])
+
+    print("\nPreview")
+
+    print(orders.head())
 
 
 if __name__ == "__main__":
