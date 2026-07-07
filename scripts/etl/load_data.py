@@ -19,6 +19,9 @@ class DataLoader:
 
     def __init__(self, file_path):
         self.file_path = Path(file_path)
+        print("\nDataset Location")
+
+        print(self.file_path)
 
         if not self.file_path.exists():
             raise FileNotFoundError(

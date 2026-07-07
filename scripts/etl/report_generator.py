@@ -5,7 +5,7 @@ Automatically generates
 Data Quality Report.
 """
 
-from config import REPORT_FILE
+from scripts.utils.config import REPORT_FILE
 
 
 class ReportGenerator:

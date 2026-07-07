@@ -4,7 +4,7 @@ export_data.py
 Exports cleaned datasets.
 """
 
-from config import (
+from scripts.utils.config import (
     CLEAN_DATA,
     ORDERS_OUTPUT,
     RETURNS_OUTPUT,

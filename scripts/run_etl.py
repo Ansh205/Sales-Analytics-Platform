@@ -1,11 +1,11 @@
-from load_data import DataLoader
-from clean_data import DataCleaner
-from feature_engineering import FeatureEngineer
-from data_validator import DataValidator
-from export_data import DataExporter
-from logger import Logger
-from report_generator import ReportGenerator
-from config import DATASET_PATH
+from scripts.etl.load_data import DataLoader
+from scripts.etl.clean_data import DataCleaner
+from scripts.etl.feature_engineering import FeatureEngineer
+from scripts.etl.data_validator import DataValidator
+from scripts.etl.export_data import DataExporter
+from scripts.utils.logger import Logger
+from scripts.etl.report_generator import ReportGenerator
+from scripts.utils.config import DATASET_PATH
 
 def main():
 

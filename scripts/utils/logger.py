@@ -6,7 +6,7 @@ Creates log file for ETL pipeline.
 
 import logging
 
-from config import LOG_FILE
+from scripts.utils.config import LOG_FILE
 
 LOG_FILE.parent.mkdir(
     exist_ok=True,
