@@ -1,49 +1,61 @@
-"""
-run_etl.py
-
-Main ETL pipeline.
-
-Phase 2
-"""
-
 from load_data import DataLoader
 from clean_data import DataCleaner
 from feature_engineering import FeatureEngineer
+from data_validator import DataValidator
+from export_data import DataExporter
 
 
 def main():
 
     print("=" * 60)
-    print("Sales Analytics Platform ETL")
+    print("Sales Analytics Platform ETL Pipeline")
     print("=" * 60)
+
+    # -----------------------
+    # Load Data
+    # -----------------------
 
     loader = DataLoader("../data/raw/Global_Superstore.xls")
 
-    cleaner = DataCleaner()
-
-    engineer = FeatureEngineer()
-
     orders, returns, people = loader.load_all()
 
-    print("\nOriginal Shape")
+    # -----------------------
+    # Cleaning
+    # -----------------------
 
-    print(orders.shape)
+    cleaner = DataCleaner()
 
     orders = cleaner.clean_orders(orders)
 
+    # -----------------------
+    # Feature Engineering
+    # -----------------------
+
+    engineer = FeatureEngineer()
+
     orders = engineer.create_features(orders)
 
-    print("\nFinal Shape")
+    # -----------------------
+    # Validation
+    # -----------------------
 
-    print(orders.shape)
+    validator = DataValidator()
 
-    print("\nNew Columns Added")
+    validator.validate_orders(orders)
 
-    print(orders.columns.tolist()[-7:])
+    # -----------------------
+    # Export
+    # -----------------------
 
-    print("\nPreview")
+    exporter = DataExporter()
 
-    print(orders.head())
+    exporter.export_all(
+        orders,
+        returns,
+        people
+    )
+
+    print("\nETL Pipeline Completed Successfully")
 
 
 if __name__ == "__main__":
