@@ -4,14 +4,18 @@ export_data.py
 Exports cleaned datasets.
 """
 
-from pathlib import Path
-
+from config import (
+    CLEAN_DATA,
+    ORDERS_OUTPUT,
+    RETURNS_OUTPUT,
+    PEOPLE_OUTPUT
+)
 
 class DataExporter:
 
     def __init__(self):
 
-        self.output_folder = Path("../data/cleaned")
+        self.output_folder = CLEAN_DATA
 
         self.output_folder.mkdir(
             parents=True,
@@ -20,7 +24,7 @@ class DataExporter:
 
     def export_orders(self, df):
 
-        output_file = self.output_folder / "orders_clean.csv"
+        output_file = ORDERS_OUTPUT
 
         df.to_csv(
             output_file,
@@ -31,7 +35,7 @@ class DataExporter:
 
     def export_returns(self, df):
 
-        output_file = self.output_folder / "returns_clean.csv"
+        output_file = RETURNS_OUTPUT
 
         df.to_csv(
             output_file,
@@ -42,7 +46,7 @@ class DataExporter:
 
     def export_people(self, df):
 
-        output_file = self.output_folder / "people_clean.csv"
+        output_file = PEOPLE_OUTPUT
 
         df.to_csv(
             output_file,

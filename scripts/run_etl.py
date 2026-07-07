@@ -3,7 +3,9 @@ from clean_data import DataCleaner
 from feature_engineering import FeatureEngineer
 from data_validator import DataValidator
 from export_data import DataExporter
-
+from logger import Logger
+from report_generator import ReportGenerator
+from config import DATASET_PATH
 
 def main():
 
@@ -15,7 +17,8 @@ def main():
     # Load Data
     # -----------------------
 
-    loader = DataLoader("../data/raw/Global_Superstore.xls")
+    loader = DataLoader(DATASET_PATH)
+    Logger.info("Dataset Loaded Successfully")
 
     orders, returns, people = loader.load_all()
 
@@ -33,7 +36,11 @@ def main():
 
     engineer = FeatureEngineer()
 
+    
+
     orders = engineer.create_features(orders)
+
+    Logger.info("Feature Engineering Completed")
 
     # -----------------------
     # Validation
@@ -42,6 +49,13 @@ def main():
     validator = DataValidator()
 
     validator.validate_orders(orders)
+
+
+    report = ReportGenerator()
+
+    report.generate(orders)
+
+    Logger.info("Data Quality Report Generated")
 
     # -----------------------
     # Export
@@ -54,6 +68,8 @@ def main():
         returns,
         people
     )
+
+    Logger.info("All datasets exported successfully.")
 
     print("\nETL Pipeline Completed Successfully")
 
