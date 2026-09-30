@@ -1,15 +1,10 @@
 /**
- * Executive Dashboard ECharts Visualization Module
- * Sales Analytics Platform (Phase 6.4)
+ * Executive & Page Analytics ECharts Visualization Module
+ * Sales Analytics Platform (Phase 6.4 & 6.5)
  */
 
 // Global ECharts instance map
-const chartInstances = {
-  salesTrend: null,
-  region: null,
-  product: null,
-  customer: null
-};
+const chartInstances = {};
 
 // Month names lookup
 const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -57,7 +52,7 @@ function showChartEmpty(chart, message = 'No data available for the selected fil
   });
 }
 
-// Window resize handler for all charts
+// Window resize handler for all active charts
 window.addEventListener('resize', () => {
   Object.values(chartInstances).forEach(chart => {
     if (chart) {
@@ -69,10 +64,10 @@ window.addEventListener('resize', () => {
 /**
  * 1. Render Sales & Profit Trend (Line Chart)
  */
-function renderSalesTrend(data) {
-  const chart = getOrCreateChart('salesTrendChart');
+function renderSalesTrend(data, elementId = 'salesTrendChart') {
+  const chart = getOrCreateChart(elementId);
   if (!chart) return;
-  chartInstances.salesTrend = chart;
+  chartInstances[elementId] = chart;
 
   if (!data || !Array.isArray(data) || data.length === 0) {
     showChartEmpty(chart);
@@ -81,9 +76,7 @@ function renderSalesTrend(data) {
 
   chart.clear();
 
-  // Determine if dataset spans multiple years
   const uniqueYears = new Set(data.map(d => d.year)).size;
-  
   const categories = data.map(d => {
     const monthName = MONTH_NAMES[(d.month - 1) % 12] || `M${d.month}`;
     return uniqueYears > 1 ? `${monthName} ${d.year}` : monthName;
@@ -183,10 +176,10 @@ function renderSalesTrend(data) {
 /**
  * 2. Render Sales by Region (Horizontal Bar Chart)
  */
-function renderRegionChart(data) {
-  const chart = getOrCreateChart('regionChart');
+function renderRegionChart(data, elementId = 'regionChart') {
+  const chart = getOrCreateChart(elementId);
   if (!chart) return;
-  chartInstances.region = chart;
+  chartInstances[elementId] = chart;
 
   if (!data || !Array.isArray(data) || data.length === 0) {
     showChartEmpty(chart);
@@ -195,7 +188,6 @@ function renderRegionChart(data) {
 
   chart.clear();
 
-  // Sort ascending by sales so highest sales appears at top in horizontal bar chart
   const sortedData = [...data].sort((a, b) => Number(a.sales) - Number(b.sales));
   const regions = sortedData.map(d => d.region);
   const sales = sortedData.map(d => Number(d.sales || 0));
@@ -258,10 +250,10 @@ function renderRegionChart(data) {
 /**
  * 3. Render Top Products (Horizontal Bar Chart)
  */
-function renderProductChart(data) {
-  const chart = getOrCreateChart('productChart');
+function renderProductChart(data, elementId = 'productChart') {
+  const chart = getOrCreateChart(elementId);
   if (!chart) return;
-  chartInstances.product = chart;
+  chartInstances[elementId] = chart;
 
   if (!data || !Array.isArray(data) || data.length === 0) {
     showChartEmpty(chart);
@@ -270,7 +262,6 @@ function renderProductChart(data) {
 
   chart.clear();
 
-  // Reverse so rank #1 appears at top in horizontal bar chart
   const sortedData = [...data].reverse();
   const productFullNames = sortedData.map(d => d.product_name || 'Unknown Product');
   const sales = sortedData.map(d => Number(d.sales || 0));
@@ -341,10 +332,10 @@ function renderProductChart(data) {
 /**
  * 4. Render Top Customers (Horizontal Bar Chart)
  */
-function renderCustomerChart(data) {
-  const chart = getOrCreateChart('customerChart');
+function renderCustomerChart(data, elementId = 'customerChart') {
+  const chart = getOrCreateChart(elementId);
   if (!chart) return;
-  chartInstances.customer = chart;
+  chartInstances[elementId] = chart;
 
   if (!data || !Array.isArray(data) || data.length === 0) {
     showChartEmpty(chart);
@@ -353,7 +344,6 @@ function renderCustomerChart(data) {
 
   chart.clear();
 
-  // Reverse so rank #1 appears at top in horizontal bar chart
   const sortedData = [...data].reverse();
   const customerNames = sortedData.map(d => d.customer_name || 'Unknown Customer');
   const sales = sortedData.map(d => Number(d.sales || 0));

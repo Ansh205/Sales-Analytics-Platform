@@ -162,7 +162,7 @@ body {
 .nav-icon {
   width: 18px;
   height: 18px;
-  shrink: 0;
+  flex-shrink: 0;
 }
 
 .sidebar-footer {
@@ -344,6 +344,10 @@ body {
   margin-bottom: 1.25rem;
 }
 
+.filter-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .filter-group {
   display: flex;
   flex-direction: column;
@@ -454,8 +458,15 @@ body {
   background-color: #b91c1c;
 }
 
-/* KPI Grid Layout */
+/* KPI Grid Layout (6 Cards vs 3 Cards) */
 .kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.kpi-grid-3 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.25rem;
@@ -568,6 +579,116 @@ body {
   gap: 1.5rem;
 }
 
+/* Data Table Styling */
+.data-table-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.data-table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.data-table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.875rem;
+}
+
+.data-table th {
+  background-color: var(--background);
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table td {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: middle;
+}
+
+.data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.data-table tr:hover td {
+  background-color: #f8fafc;
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: #f1f5f9;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-muted {
+  color: var(--muted);
+}
+
+.positive-profit {
+  color: #10b981;
+  font-weight: 600;
+}
+
+.negative-profit {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.badge-category, .badge-segment {
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: #f1f5f9;
+  color: #475569;
+  display: inline-block;
+}
+
 /* Loading Skeleton Shimmer */
 .skeleton {
   background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
@@ -598,7 +719,10 @@ body {
   .filter-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .kpi-grid {
+  .filter-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .kpi-grid, .kpi-grid-3 {
     grid-template-columns: repeat(2, 1fr);
   }
   .chart-grid-split {
@@ -623,7 +747,7 @@ body {
     display: flex;
   }
 
-  .filter-grid {
+  .filter-grid, .filter-grid-3 {
     grid-template-columns: 1fr;
   }
 
@@ -636,7 +760,7 @@ body {
     justify-content: center;
   }
 
-  .kpi-grid {
+  .kpi-grid, .kpi-grid-3 {
     grid-template-columns: 1fr;
   }
 
@@ -644,3 +768,43 @@ body {
     padding: 1.5rem 1rem;
   }
 }
+
+/* Power BI Workspace Page Styling */
+.powerbi-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.powerbi-container {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 600px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background-color: var(--background);
+  border: 1px solid var(--border);
+}
+
+.powerbi-container iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+.powerbi-notice {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  background-color: #f8fafc;
+  border-left: 4px solid var(--primary);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+

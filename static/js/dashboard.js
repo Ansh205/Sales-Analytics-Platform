@@ -1,6 +1,6 @@
 /**
- * Executive Dashboard Vanilla JavaScript Integration & Controller
- * Sales Analytics Platform (Phase 6.4)
+ * Executive Overview & Page Analytics Controller
+ * Sales Analytics Platform (Phase 6.4 & 6.5)
  */
 
 // Format currency values (e.g. $2.30M, $286.40K, or $1,234.56)
@@ -107,7 +107,7 @@ function showErrorState(message) {
   const errorBanner = document.getElementById('errorBanner');
   const errorMessage = document.getElementById('errorMessage');
   if (errorMessage) {
-    errorMessage.textContent = message || 'Unable to update dashboard data. Please check that the API server is running.';
+    errorMessage.textContent = message || 'Unable to update analytics data. Please check that the API server is running.';
   }
   if (errorBanner) {
     errorBanner.classList.add('visible');
@@ -122,16 +122,23 @@ function showErrorState(message) {
   });
 }
 
-// Update 6 KPI card elements with API response data
+// Update KPI card elements with summary API response data
 function updateKPIs(data) {
   if (!data) return;
 
-  document.getElementById('kpi-sales').textContent = formatCurrency(data.total_sales);
-  document.getElementById('kpi-profit').textContent = formatCurrency(data.total_profit);
-  document.getElementById('kpi-orders').textContent = formatNumber(data.total_orders);
-  document.getElementById('kpi-customers').textContent = formatNumber(data.total_customers);
-  document.getElementById('kpi-margin').textContent = formatPercentage(data.profit_margin);
-  document.getElementById('kpi-return').textContent = formatPercentage(data.return_rate);
+  const kpiSales = document.getElementById('kpi-sales');
+  const kpiProfit = document.getElementById('kpi-profit');
+  const kpiOrders = document.getElementById('kpi-orders');
+  const kpiCustomers = document.getElementById('kpi-customers');
+  const kpiMargin = document.getElementById('kpi-margin');
+  const kpiReturn = document.getElementById('kpi-return');
+
+  if (kpiSales) kpiSales.textContent = formatCurrency(data.total_sales);
+  if (kpiProfit) kpiProfit.textContent = formatCurrency(data.total_profit);
+  if (kpiOrders) kpiOrders.textContent = formatNumber(data.total_orders);
+  if (kpiCustomers) kpiCustomers.textContent = formatNumber(data.total_customers);
+  if (kpiMargin) kpiMargin.textContent = formatPercentage(data.profit_margin);
+  if (kpiReturn) kpiReturn.textContent = formatPercentage(data.return_rate);
 }
 
 // Fetch single API endpoint safely returning JSON
@@ -146,7 +153,9 @@ async function fetchEndpoint(url) {
   return await res.json();
 }
 
-// Fetch summary metrics and 4 chart payloads concurrently using Promise.all
+/**
+ * 1. EXECUTIVE DASHBOARD PAGE CONTROLLER
+ */
 async function loadDashboardData(filters = null) {
   setLoadingState();
   const queryString = buildQueryString(filters);
@@ -166,15 +175,13 @@ async function loadDashboardData(filters = null) {
       fetchEndpoint(customerUrl)
     ]);
 
-    // 1. Update KPI Cards & Active Indicator Badge
     updateKPIs(summaryData);
     updateActiveFiltersIndicator(filters);
 
-    // 2. Render 4 Charts with API Data
-    if (typeof renderSalesTrend === 'function') renderSalesTrend(monthlyData);
-    if (typeof renderRegionChart === 'function') renderRegionChart(regionData);
-    if (typeof renderProductChart === 'function') renderProductChart(productData);
-    if (typeof renderCustomerChart === 'function') renderCustomerChart(customerData);
+    if (typeof renderSalesTrend === 'function') renderSalesTrend(monthlyData, 'salesTrendChart');
+    if (typeof renderRegionChart === 'function') renderRegionChart(regionData, 'regionChart');
+    if (typeof renderProductChart === 'function') renderProductChart(productData, 'productChart');
+    if (typeof renderCustomerChart === 'function') renderCustomerChart(customerData, 'customerChart');
 
   } catch (error) {
     console.error('Error fetching dashboard analytics data:', error);
@@ -182,13 +189,176 @@ async function loadDashboardData(filters = null) {
   }
 }
 
-// Event handler for "Apply Filters" button
-function handleApplyFilters() {
-  const filters = getSelectedFilters();
-  loadDashboardData(filters);
+/**
+ * 2. PRODUCTS PAGE CONTROLLER
+ */
+async function loadProductsPage(filters = null) {
+  setLoadingState();
+  const queryString = buildQueryString(filters);
+
+  const summaryUrl = `/api/summary${queryString}`;
+  const productUrl = `/api/products/top${queryString ? queryString + '&limit=10' : '?limit=10'}`;
+
+  try {
+    const [summaryData, productData] = await Promise.all([
+      fetchEndpoint(summaryUrl),
+      fetchEndpoint(productUrl)
+    ]);
+
+    updateKPIs(summaryData);
+    updateActiveFiltersIndicator(filters);
+
+    if (typeof renderProductChart === 'function') {
+      renderProductChart(productData, 'productPageChart');
+    }
+
+    populateProductTable(productData);
+
+  } catch (error) {
+    console.error('Error loading products page analytics:', error);
+    showErrorState('Unable to load product analytics. Please check that the API server is running.');
+  }
 }
 
-// Event handler for "Reset Filters" button
+function populateProductTable(products) {
+  const tbody = document.getElementById('productTableBody');
+  if (!tbody) return;
+
+  if (!products || !Array.isArray(products) || products.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted">No products available for the selected filters.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = products.map((item, index) => {
+    const profitClass = Number(item.profit) >= 0 ? 'positive-profit' : 'negative-profit';
+    return `
+      <tr>
+        <td><span class="rank-badge">${index + 1}</span></td>
+        <td style="font-weight: 500;">${item.product_name || 'Unknown Product'}</td>
+        <td><span class="badge-category">${item.category || 'N/A'}</span></td>
+        <td><span class="badge-segment">${item.sub_category || 'N/A'}</span></td>
+        <td class="text-right" style="font-weight: 600;">${formatCurrency(item.sales)}</td>
+        <td class="text-right ${profitClass}">${formatCurrency(item.profit)}</td>
+      </tr>`;
+  }).join('');
+}
+
+/**
+ * 3. CUSTOMERS PAGE CONTROLLER
+ */
+async function loadCustomersPage(filters = null) {
+  setLoadingState();
+  const queryString = buildQueryString(filters);
+
+  const summaryUrl = `/api/summary${queryString}`;
+  const customerUrl = `/api/customers/top${queryString ? queryString + '&limit=10' : '?limit=10'}`;
+
+  try {
+    const [summaryData, customerData] = await Promise.all([
+      fetchEndpoint(summaryUrl),
+      fetchEndpoint(customerUrl)
+    ]);
+
+    updateKPIs(summaryData);
+    updateActiveFiltersIndicator(filters);
+
+    if (typeof renderCustomerChart === 'function') {
+      renderCustomerChart(customerData, 'customerPageChart');
+    }
+
+    populateCustomerTable(customerData);
+
+  } catch (error) {
+    console.error('Error loading customers page analytics:', error);
+    showErrorState('Unable to load customer analytics. Please check that the API server is running.');
+  }
+}
+
+function populateCustomerTable(customers) {
+  const tbody = document.getElementById('customerTableBody');
+  if (!tbody) return;
+
+  if (!customers || !Array.isArray(customers) || customers.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted">No customers available for the selected filters.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = customers.map((item, index) => {
+    const profitClass = Number(item.profit) >= 0 ? 'positive-profit' : 'negative-profit';
+    return `
+      <tr>
+        <td><span class="rank-badge">${index + 1}</span></td>
+        <td style="font-weight: 500;">${item.customer_name || 'Unknown Customer'}</td>
+        <td><span class="badge-segment">${item.segment || 'N/A'}</span></td>
+        <td class="text-right" style="font-weight: 600;">${formatCurrency(item.sales)}</td>
+        <td class="text-right ${profitClass}">${formatCurrency(item.profit)}</td>
+      </tr>`;
+  }).join('');
+}
+
+/**
+ * 4. REGIONS PAGE CONTROLLER
+ */
+async function loadRegionsPage(filters = null) {
+  setLoadingState();
+  const queryString = buildQueryString(filters);
+
+  const summaryUrl = `/api/summary${queryString}`;
+  const regionUrl = `/api/sales/region${queryString}`;
+
+  try {
+    const [summaryData, regionData] = await Promise.all([
+      fetchEndpoint(summaryUrl),
+      fetchEndpoint(regionUrl)
+    ]);
+
+    updateKPIs(summaryData);
+    updateActiveFiltersIndicator(filters);
+
+    if (typeof renderRegionChart === 'function') {
+      renderRegionChart(regionData, 'regionPageChart');
+    }
+
+    populateRegionTable(regionData);
+
+  } catch (error) {
+    console.error('Error loading regional page analytics:', error);
+    showErrorState('Unable to load regional analytics. Please check that the API server is running.');
+  }
+}
+
+function populateRegionTable(regions) {
+  const tbody = document.getElementById('regionTableBody');
+  if (!tbody) return;
+
+  if (!regions || !Array.isArray(regions) || regions.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted">No regional data available for the selected filters.</td></tr>`;
+    return;
+  }
+
+  // Sort descending by sales for display table
+  const sortedRegions = [...regions].sort((a, b) => Number(b.sales) - Number(a.sales));
+
+  tbody.innerHTML = sortedRegions.map((item, index) => {
+    const profitClass = Number(item.profit) >= 0 ? 'positive-profit' : 'negative-profit';
+    return `
+      <tr>
+        <td><span class="rank-badge">${index + 1}</span></td>
+        <td style="font-weight: 600;">${item.region || 'Unknown Region'} Region</td>
+        <td class="text-right" style="font-weight: 600;">${formatCurrency(item.sales)}</td>
+        <td class="text-right ${profitClass}">${formatCurrency(item.profit)}</td>
+        <td class="text-right" style="font-weight: 500;">${formatNumber(item.orders)}</td>
+      </tr>`;
+  }).join('');
+}
+
+// Universal event handler for "Apply Filters" button across all pages
+function handleApplyFilters() {
+  const filters = getSelectedFilters();
+  dispatchPageLoader(filters);
+}
+
+// Universal event handler for "Reset Filters" button across all pages
 function handleResetFilters() {
   const yearSelect = document.getElementById('yearFilter');
   const regionSelect = document.getElementById('regionFilter');
@@ -200,10 +370,23 @@ function handleResetFilters() {
   if (categorySelect) categorySelect.value = '';
   if (segmentSelect) segmentSelect.value = '';
 
-  loadDashboardData(null);
+  dispatchPageLoader(null);
 }
 
-// Initialize dashboard on DOM ready
+// Router dispatcher to invoke page loader based on active element containers
+function dispatchPageLoader(filters = null) {
+  if (document.getElementById('salesTrendChart')) {
+    loadDashboardData(filters);
+  } else if (document.getElementById('productPageChart')) {
+    loadProductsPage(filters);
+  } else if (document.getElementById('customerPageChart')) {
+    loadCustomersPage(filters);
+  } else if (document.getElementById('regionPageChart')) {
+    loadRegionsPage(filters);
+  }
+}
+
+// Initialize active page on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
-  loadDashboardData(null);
+  dispatchPageLoader(null);
 });

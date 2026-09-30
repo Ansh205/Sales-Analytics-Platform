@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Power BI Executive Dashboard - Sales Analytics Platform{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="dashboard-header">
+  <h1 class="dashboard-title">Power BI Executive Dashboard</h1>
+  <p class="dashboard-description">Interactive business intelligence report built with Microsoft Power BI.</p>
+</div>
+
+<!-- Power BI Card Shell -->
+<div class="powerbi-card">
+  <div class="powerbi-container">
+    <iframe
+      title="Sales Analytics Platform Power BI Executive Dashboard"
+      src="https://app.powerbi.com/reportEmbed?reportId=7248aa69-bfc4-4d0f-a647-e07ba6618878&autoAuth=true&ctid=35e8087e-75a7-4479-b528-df0fbbb7fc26&actionBarEnabled=true"
+      frameborder="0"
+      allowfullscreen="true">
+    </iframe>
+  </div>
+
+  <!-- Informational Notice -->
+  <div class="powerbi-notice">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="16" x2="12" y2="12"></line>
+      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+    </svg>
+    <span><strong>Note:</strong> Power BI may require Microsoft authentication and appropriate report permissions.</span>
+  </div>
+</div>
+{% endblock %}

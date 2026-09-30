@@ -52,16 +52,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="nav-item placeholder-link" onclick="event.preventDefault(); alert('Analytics details page will be implemented in later phases.');">
-              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
-                <polyline points="17 6 23 6 23 12"></polyline>
-              </svg>
-              <span>Analytics</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-item placeholder-link" onclick="event.preventDefault(); alert('Products page will be implemented in later phases.');">
+            <a href="/products" class="nav-item {% if active_page == 'products' %}active{% endif %}">
               <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
               </svg>
@@ -69,7 +60,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="nav-item placeholder-link" onclick="event.preventDefault(); alert('Customers page will be implemented in later phases.');">
+            <a href="/customers" class="nav-item {% if active_page == 'customers' %}active{% endif %}">
               <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                 <circle cx="9" cy="7" r="4"></circle>
@@ -80,7 +71,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="nav-item placeholder-link" onclick="event.preventDefault(); alert('Regions page will be implemented in later phases.');">
+            <a href="/regions" class="nav-item {% if active_page == 'regions' %}active{% endif %}">
               <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
                 <line x1="2" y1="12" x2="22" y2="12"></line>
@@ -90,7 +81,7 @@
             </a>
           </li>
           <li>
-            <a href="#" class="nav-item placeholder-link" onclick="event.preventDefault(); alert('Power BI workspace integration will be implemented in later phases.');">
+            <a href="/powerbi" class="nav-item {% if active_page == 'powerbi' %}active{% endif %}">
               <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
                 <line x1="8" y1="21" x2="16" y2="21"></line>

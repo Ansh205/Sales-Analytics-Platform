@@ -5,106 +5,119 @@
 The Sales Analytics Platform frontend is implemented using a lightweight, server-rendered Jinja2 template architecture with vanilla JavaScript, Apache ECharts, and custom CSS:
 - **Template Engine**: Jinja2 (`fastapi.templating.Jinja2Templates`)
 - **Static Assets**: FastAPI StaticFiles (`fastapi.staticfiles.StaticFiles`)
-- **Visualization Library**: Apache ECharts v5.4.3 via official CDN (`https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js`)
-- **Styling**: HTML5 + CSS3 (CSS Custom Properties design system)
+- **Visualization Libraries**: Apache ECharts v5.4.3 via official CDN & Power BI via official secure `reportEmbed` iframe
+- **Styling**: HTML5 + CSS3 (CSS Custom Properties design system with responsive card layouts, styled data tables, and 16:9 Power BI aspect-ratio containers)
 - **Scripting**: Vanilla JavaScript (ES6+ `fetch` API, `Promise.all` concurrent fetching, and `URLSearchParams`)
 
 ---
 
-## 2. Directory Architecture
+## 2. Directory Architecture & Final Navigation
 
 ```
 Sales-Analytics-Platform/
 ├── app/
-│   └── main.py              # Configured with Jinja2Templates, StaticFiles, and /dashboard route
+│   └── main.py              # Page routes (/dashboard, /products, /customers, /regions, /powerbi) & static mounts
 ├── templates/
-│   ├── base.html            # Core HTML5 layout shell + Apache ECharts CDN script tag
-│   └── dashboard.html       # Executive Overview template with filter panel, KPI grid & 4 chart cards
+│   ├── base.html            # Application shell shell, 5-item sidebar navigation, and Apache ECharts CDN
+│   ├── dashboard.html       # Executive Overview template (6 KPI cards, 4 ECharts cards)
+│   ├── products.html        # Product Analytics template (3 KPI cards, Top Products chart & table)
+│   ├── customers.html       # Customer Analytics template (3 KPI cards, Top Customers chart & table)
+│   ├── regions.html         # Regional Analytics template (3 KPI cards, Sales by Region chart & table)
+│   └── powerbi.html         # Power BI Executive Dashboard template (Secure reportEmbed iframe)
 ├── static/
 │   ├── css/
-│   │   └── style.css        # CSS variables, card layouts, filter panel grid & chart container styles
+│   │   └── style.css        # Core styles, sidebar, KPI cards, filter panel, ECharts containers, data tables & Power BI
 │   └── js/
-│       ├── charts.js        # Apache ECharts initialization, options, tooltips, resize & empty states
-│       └── dashboard.js     # Shared filter state, Promise.all concurrent API fetching, KPI updates
+│       ├── charts.js        # ECharts initialization, custom elementId options, tooltips, resize & empty states
+│       └── dashboard.js     # Shared filter state, modular page controllers, Promise.all API fetching & tables
 └── docs/
     └── frontend_setup.md    # Frontend documentation
 ```
+
+### Final Sidebar Navigation Structure
+1. **Overview**: `/dashboard`
+2. **Products**: `/products`
+3. **Customers**: `/customers`
+4. **Regions**: `/regions`
+5. **Power BI**: `/powerbi`
+
+*(Note: The placeholder `Analytics` navigation item has been completely removed).*
 
 ---
 
 ## 3. Serving Frontend & Static Files
 
-### Route Matrix
-- `GET /`: API Health & Root JSON payload (`{"message": "...", "status": "healthy"}`)
-- `GET /dashboard`: Executive Overview Jinja2 Dashboard HTML page
-- `GET /static/...`: Serves CSS, JS, and static media from `static/` directory
-
-### Portable Path Configuration (`app/main.py`)
-```python
-BASE_DIR = Path(__file__).resolve().parent.parent
-TEMPLATES_DIR = BASE_DIR / "templates"
-STATIC_DIR = BASE_DIR / "static"
-
-app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
-templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
-```
+### Page Route Matrix
+- `GET /`: API Root health JSON payload (`{"message": "...", "status": "healthy"}`)
+- `GET /dashboard`: Executive Overview Jinja2 Dashboard HTML page (`active_page = "overview"`)
+- `GET /products`: Product Analytics Jinja2 HTML page (`active_page = "products"`)
+- `GET /customers`: Customer Analytics Jinja2 HTML page (`active_page = "customers"`)
+- `GET /regions`: Regional Analytics Jinja2 HTML page (`active_page = "regions"`)
+- `GET /powerbi`: Power BI Executive Dashboard Jinja2 HTML page (`active_page = "powerbi"`)
+- `GET /static/...`: Serves static CSS, JS, and media assets
 
 ---
 
-## 4. Executive Dashboard & KPI Cards
+## 4. Page Architecture & Feature Breakdown
 
-The dashboard at `/dashboard` displays six key performance metrics populated asynchronously via relative API path `/api/summary`:
-1. **Total Sales**: Currency formatted (e.g., `$2.30M` / `$2,297,200.86`)
-2. **Total Profit**: Currency formatted (e.g., `$286.40K` / `$286,397.02`)
-3. **Total Orders**: Thousands separator formatted (e.g., `5,009`)
-4. **Total Customers**: Thousands separator formatted (e.g., `793`)
-5. **Profit Margin**: Percentage formatted (e.g., `12.46%`)
-6. **Return Rate**: Percentage formatted (e.g., `5.43%`)
+### A. Executive Dashboard (`/dashboard`)
+- **Route**: `GET /dashboard`
+- **APIs Used**: `GET /api/summary`, `GET /api/sales/monthly`, `GET /api/sales/region`, `GET /api/products/top?limit=10`, `GET /api/customers/top?limit=10`
+- **KPI Cards**: Total Sales, Total Profit, Total Orders, Total Customers, Profit Margin, Return Rate
+- **Charts**: Sales & Profit Trend (Line), Sales by Region (Bar), Top 10 Products (Bar), Top 10 Customers (Bar)
+
+### B. Product Analytics (`/products`)
+- **Route**: `GET /products`
+- **APIs Used**: `GET /api/summary`, `GET /api/products/top?limit=10`
+- **Purpose**: Analyze product-level sales performance and identify top catalog items
+- **KPI Cards**: Total Product Sales, Total Product Profit, Total Orders
+- **Chart**: Top 10 Products by Sales (Horizontal ECharts bar chart)
+- **Data Table**: Top Product Performance Details (Rank, Product Name, Category, Sub-Category, Sales, Profit)
+
+### C. Customer Analytics (`/customers`)
+- **Route**: `GET /customers`
+- **APIs Used**: `GET /api/summary`, `GET /api/customers/top?limit=10`
+- **Purpose**: Analyze customer contribution and identify high-value accounts
+- **KPI Cards**: Total Customers, Customer Sales, Total Orders
+- **Chart**: Top 10 Customers by Sales (Horizontal ECharts bar chart)
+- **Data Table**: Top Customer Performance Details (Rank, Customer Name, Segment, Total Sales, Total Profit)
+
+### D. Regional Analytics (`/regions`)
+- **Route**: `GET /regions`
+- **APIs Used**: `GET /api/summary`, `GET /api/sales/region`
+- **Purpose**: Compare sales performance and profit across geographic regions
+- **KPI Cards**: Regional Sales, Regional Profit, Total Orders
+- **Chart**: Sales by Region Comparison (Horizontal ECharts bar chart)
+- **Data Table**: Regional Performance Comparison Table (Rank, Region Name, Sales, Profit, Total Orders)
+
+### E. Power BI Executive Dashboard (`/powerbi`)
+- **Route**: `GET /powerbi`
+- **Embed URL**: Official secure `reportEmbed` URL:
+  `https://app.powerbi.com/reportEmbed?reportId=7248aa69-bfc4-4d0f-a647-e07ba6618878&autoAuth=true&ctid=35e8087e-75a7-4479-b528-df0fbbb7fc26&actionBarEnabled=true`
+- **Security & Authentication Architecture**:
+  - Uses Power BI's secure `reportEmbed` architecture.
+  - Does **NOT** use public "Publish to web" (no public data exposure).
+  - No credentials, tokens, or client secrets are exposed in backend or frontend JavaScript.
+  - Native Microsoft Azure AD authentication & workspace permissions are delegated securely to Power BI.
+- **Informational Callout**: Includes a subtle user notice stating *"Power BI may require Microsoft authentication and appropriate report permissions."*
 
 ---
 
-## 5. Dashboard Filters (Phase 6.3)
-
-The dashboard includes an interactive filter panel above the KPI grid allowing users to filter analytics dynamically by:
-- **Year**: All Years (`""`), 2020, 2021, 2022, 2023
-- **Region**: All Regions (`""`), Central, East, South, West
-- **Category**: All Categories (`""`), Furniture, Office Supplies, Technology
-- **Segment**: All Segments (`""`), Consumer, Corporate, Home Office
-
----
-
-## 6. ECharts Interactive Charts (Phase 6.4)
-
-The dashboard features four interactive charts powered by Apache ECharts (`static/js/charts.js`), updated dynamically via shared filter state in `static/js/dashboard.js`:
-
-| Chart Name | Element ID | Endpoint API | Visual Type | Key Metrics / Features |
-|---|---|---|---|---|
-| **Sales & Profit Trend** | `#salesTrendChart` | `GET /api/sales/monthly` | Smooth Line Chart | Dual series (Sales in blue `#2563eb`, Profit in green `#10b981`), legend, gradient fill, formatted currency tooltip |
-| **Sales by Region** | `#regionChart` | `GET /api/sales/region` | Horizontal Bar Chart | Regional sales comparison, sorted rank |
-| **Top Products** | `#productChart` | `GET /api/products/top?limit=10` | Horizontal Bar Chart | Top 10 products by sales, visual text truncation for long product names, full name tooltip |
-| **Top Customers** | `#customerChart` | `GET /api/customers/top?limit=10` | Horizontal Bar Chart | Top 10 customer accounts by sales |
-
-### Shared Filter State & Concurrent API Requests
-- Clicking **Apply Filters** or **Reset** reads the single shared filter state (`year`, `region`, `category`, `segment`), constructs query parameters via `URLSearchParams`, and executes concurrent requests via `Promise.all([fetchSummary(), fetchMonthlySales(), fetchRegionSales(), fetchTopProducts(), fetchTopCustomers()])`.
-- Charts update in-place without page reload using `chart.setOption()`.
-- If an endpoint returns an empty array, the chart displays a clean empty state message: *"No data available for the selected filters."*
-- Window resize events call `chart.resize()` automatically for fluid responsive behavior across desktop, tablet, and mobile screens.
-
----
-
-## 7. How to Run Locally
+## 5. How to Run Locally
 
 1. Start the FastAPI development server:
    ```powershell
    .\venv\Scripts\python -m uvicorn app.main:app --reload
    ```
 
-2. Open the Executive Dashboard in your browser:
-   ```text
-   http://127.0.0.1:8000/dashboard
-   ```
+2. Open the pages in your browser:
+   - Dashboard: `http://127.0.0.1:8000/dashboard`
+   - Products: `http://127.0.0.1:8000/products`
+   - Customers: `http://127.0.0.1:8000/customers`
+   - Regions: `http://127.0.0.1:8000/regions`
+   - Power BI: `http://127.0.0.1:8000/powerbi`
 
-3. Run the automated backend test suite:
+3. Run the automated test suite:
    ```powershell
    .\venv\Scripts\python -m unittest discover -s tests
    ```

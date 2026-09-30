@@ -60,6 +60,63 @@ def render_dashboard(request: Request):
     )
 
 
+@app.get("/products", response_class=HTMLResponse, tags=["Frontend"])
+@app.get("/products/", response_class=HTMLResponse, include_in_schema=False)
+def render_products(request: Request):
+    """
+    GET /products
+    Renders the Product Analytics Jinja2 HTML template.
+    """
+    return templates.TemplateResponse(
+        request=request,
+        name="products.html",
+        context={"active_page": "products"}
+    )
+
+
+@app.get("/customers", response_class=HTMLResponse, tags=["Frontend"])
+@app.get("/customers/", response_class=HTMLResponse, include_in_schema=False)
+def render_customers(request: Request):
+    """
+    GET /customers
+    Renders the Customer Analytics Jinja2 HTML template.
+    """
+    return templates.TemplateResponse(
+        request=request,
+        name="customers.html",
+        context={"active_page": "customers"}
+    )
+
+
+@app.get("/regions", response_class=HTMLResponse, tags=["Frontend"])
+@app.get("/regions/", response_class=HTMLResponse, include_in_schema=False)
+def render_regions(request: Request):
+    """
+    GET /regions
+    Renders the Regional Analytics Jinja2 HTML template.
+    """
+    return templates.TemplateResponse(
+        request=request,
+        name="regions.html",
+        context={"active_page": "regions"}
+    )
+
+
+@app.get("/powerbi", response_class=HTMLResponse, tags=["Frontend"])
+@app.get("/powerbi/", response_class=HTMLResponse, include_in_schema=False)
+def render_powerbi(request: Request):
+    """
+    GET /powerbi
+    Renders the Power BI Executive Dashboard Jinja2 HTML template.
+    """
+    return templates.TemplateResponse(
+        request=request,
+        name="powerbi.html",
+        context={"active_page": "powerbi"}
+    )
+
+
+
 @app.get("/api/health/db", tags=["Health"])
 def health_check_db(db: Session = Depends(get_db)):
     """
