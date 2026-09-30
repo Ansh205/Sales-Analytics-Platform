@@ -13,6 +13,7 @@ from app.routes import analytics
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = BASE_DIR / "templates"
 STATIC_DIR = BASE_DIR / "static"
+IMAGES_DIR = BASE_DIR / "images"
 
 app = FastAPI(
     title="Sales Analytics Platform API",
@@ -20,12 +21,14 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# Ensure static directory exists before mounting
+# Ensure directories exist before mounting
 STATIC_DIR.mkdir(parents=True, exist_ok=True)
 TEMPLATES_DIR.mkdir(parents=True, exist_ok=True)
 
-# Mount static files
+# Mount static files and images
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+if IMAGES_DIR.exists():
+    app.mount("/images", StaticFiles(directory=str(IMAGES_DIR)), name="images")
 
 # Jinja2 template engine configuration
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))

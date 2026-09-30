@@ -6,28 +6,38 @@
 <!-- Page Header -->
 <div class="dashboard-header">
   <h1 class="dashboard-title">Power BI Executive Dashboard</h1>
-  <p class="dashboard-description">Interactive business intelligence report built with Microsoft Power BI.</p>
+  <p class="dashboard-description">Interactive business intelligence dashboard</p>
 </div>
 
-<!-- Power BI Card Shell -->
-<div class="powerbi-card">
-  <div class="powerbi-container">
-    <iframe
-      title="Sales Analytics Platform Power BI Executive Dashboard"
-      src="https://app.powerbi.com/reportEmbed?reportId=7248aa69-bfc4-4d0f-a647-e07ba6618878&autoAuth=true&ctid=35e8087e-75a7-4479-b528-df0fbbb7fc26&actionBarEnabled=true"
-      frameborder="0"
-      allowfullscreen="true">
-    </iframe>
+<!-- Power BI Preview Card Shell -->
+<div class="powerbi-preview-card">
+  <!-- Screenshot Preview -->
+  <div class="powerbi-image-wrapper">
+    <img
+      src="/images/Screenshot 2026-09-30 064558.png"
+      alt="Sales Analytics Platform Power BI Executive Dashboard"
+      class="powerbi-preview-img"
+    />
   </div>
 
-  <!-- Informational Notice -->
-  <div class="powerbi-notice">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="12" cy="12" r="10"></circle>
-      <line x1="12" y1="16" x2="12" y2="12"></line>
-      <line x1="12" y1="8" x2="12.01" y2="8"></line>
-    </svg>
-    <span><strong>Note:</strong> Power BI may require Microsoft authentication and appropriate report permissions.</span>
+  <!-- Actions & Informational Callouts -->
+  <div class="powerbi-actions-container">
+    <a
+      href="https://app.powerbi.com/reportEmbed?reportId=7248aa69-bfc4-4d0f-a647-e07ba6618878&autoAuth=true&ctid=35e8087e-75a7-4479-b528-df0fbbb7fc26&actionBarEnabled=true"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn btn-primary btn-lg powerbi-cta"
+    >
+      <span>Open Full Interactive Dashboard</span>
+      <svg class="external-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+        <polyline points="15 3 21 3 21 9"></polyline>
+        <line x1="10" y1="14" x2="21" y2="3"></line>
+      </svg>
+    </a>
+
+    <p class="powerbi-info-text">Open the full interactive report to explore filters, charts and detailed Power BI insights.</p>
+    <p class="powerbi-sub-note">Microsoft authentication may be required to access the interactive report.</p>
   </div>
 </div>
 {% endblock %}

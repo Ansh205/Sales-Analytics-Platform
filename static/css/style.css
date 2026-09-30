@@ -769,42 +769,77 @@ body {
   }
 }
 
-/* Power BI Workspace Page Styling */
-.powerbi-card {
+/* Power BI Preview Page Styling */
+.powerbi-preview-card {
   background-color: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
-  padding: 1.25rem;
+  padding: 1.5rem;
   box-shadow: var(--shadow-sm);
-}
-
-.powerbi-container {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  min-height: 600px;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  background-color: var(--background);
-  border: 1px solid var(--border);
-}
-
-.powerbi-container iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  display: block;
-}
-
-.powerbi-notice {
   display: flex;
+  flex-direction: column;
   align-items: center;
+}
+
+.powerbi-image-wrapper {
+  width: 100%;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.75rem;
+  background-color: #0f172a;
+}
+
+.powerbi-preview-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.powerbi-actions-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 0.625rem;
-  margin-top: 1rem;
-  padding: 0.75rem 1rem;
-  background-color: #f8fafc;
-  border-left: 4px solid var(--primary);
-  border-radius: var(--radius-sm);
-  font-size: 0.8125rem;
+  max-width: 600px;
+  width: 100%;
+  padding: 0.5rem 0;
+}
+
+.btn-lg {
+  padding: 0.75rem 1.75rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.powerbi-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.25);
+}
+
+.powerbi-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px -2px rgba(37, 99, 235, 0.35);
+}
+
+.powerbi-info-text {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-top: 0.25rem;
+}
+
+.powerbi-sub-note {
+  font-size: 0.75rem;
   color: var(--muted);
 }
+
 

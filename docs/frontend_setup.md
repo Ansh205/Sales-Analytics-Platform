@@ -5,8 +5,8 @@
 The Sales Analytics Platform frontend is implemented using a lightweight, server-rendered Jinja2 template architecture with vanilla JavaScript, Apache ECharts, and custom CSS:
 - **Template Engine**: Jinja2 (`fastapi.templating.Jinja2Templates`)
 - **Static Assets**: FastAPI StaticFiles (`fastapi.staticfiles.StaticFiles`)
-- **Visualization Libraries**: Apache ECharts v5.4.3 via official CDN & Power BI via official secure `reportEmbed` iframe
-- **Styling**: HTML5 + CSS3 (CSS Custom Properties design system with responsive card layouts, styled data tables, and 16:9 Power BI aspect-ratio containers)
+- **Visualization Libraries**: Apache ECharts v5.4.3 via official CDN & Power BI via preview screenshots + secure Microsoft `reportEmbed` link
+- **Styling**: HTML5 + CSS3 (CSS Custom Properties design system with responsive card layouts, styled data tables, and high-impact Power BI CTA buttons)
 - **Scripting**: Vanilla JavaScript (ES6+ `fetch` API, `Promise.all` concurrent fetching, and `URLSearchParams`)
 
 ---
@@ -16,17 +16,18 @@ The Sales Analytics Platform frontend is implemented using a lightweight, server
 ```
 Sales-Analytics-Platform/
 ├── app/
-│   └── main.py              # Page routes (/dashboard, /products, /customers, /regions, /powerbi) & static mounts
+│   └── main.py              # Page routes (/dashboard, /products, /customers, /regions, /powerbi), /static & /images mounts
 ├── templates/
-│   ├── base.html            # Application shell shell, 5-item sidebar navigation, and Apache ECharts CDN
+│   ├── base.html            # Application shell, 5-item sidebar navigation, and Apache ECharts CDN
 │   ├── dashboard.html       # Executive Overview template (6 KPI cards, 4 ECharts cards)
 │   ├── products.html        # Product Analytics template (3 KPI cards, Top Products chart & table)
 │   ├── customers.html       # Customer Analytics template (3 KPI cards, Top Customers chart & table)
 │   ├── regions.html         # Regional Analytics template (3 KPI cards, Sales by Region chart & table)
-│   └── powerbi.html         # Power BI Executive Dashboard template (Secure reportEmbed iframe)
+│   └── powerbi.html         # Power BI Executive Dashboard preview template (Screenshot preview & CTA button)
+├── images/                  # Actual Power BI Executive Dashboard screenshots
 ├── static/
 │   ├── css/
-│   │   └── style.css        # Core styles, sidebar, KPI cards, filter panel, ECharts containers, data tables & Power BI
+│   │   └── style.css        # Core styles, sidebar, KPI cards, filter panel, ECharts containers, data tables & Power BI preview
 │   └── js/
 │       ├── charts.js        # ECharts initialization, custom elementId options, tooltips, resize & empty states
 │       └── dashboard.js     # Shared filter state, modular page controllers, Promise.all API fetching & tables
@@ -55,6 +56,7 @@ Sales-Analytics-Platform/
 - `GET /regions`: Regional Analytics Jinja2 HTML page (`active_page = "regions"`)
 - `GET /powerbi`: Power BI Executive Dashboard Jinja2 HTML page (`active_page = "powerbi"`)
 - `GET /static/...`: Serves static CSS, JS, and media assets
+- `GET /images/...`: Serves static Power BI dashboard screenshot images
 
 ---
 
@@ -92,14 +94,18 @@ Sales-Analytics-Platform/
 
 ### E. Power BI Executive Dashboard (`/powerbi`)
 - **Route**: `GET /powerbi`
-- **Embed URL**: Official secure `reportEmbed` URL:
+- **Preview Architecture**:
+  - Displays high-resolution dashboard screenshot `images/Screenshot 2026-09-30 064558.png` in a responsive rounded wrapper.
+  - Prominent CTA Button: **"Open Full Interactive Dashboard ↗"** opening the official secure `reportEmbed` URL in a new browser tab (`target="_blank" rel="noopener noreferrer"`).
+- **Embed URL**:
   `https://app.powerbi.com/reportEmbed?reportId=7248aa69-bfc4-4d0f-a647-e07ba6618878&autoAuth=true&ctid=35e8087e-75a7-4479-b528-df0fbbb7fc26&actionBarEnabled=true`
-- **Security & Authentication Architecture**:
-  - Uses Power BI's secure `reportEmbed` architecture.
-  - Does **NOT** use public "Publish to web" (no public data exposure).
-  - No credentials, tokens, or client secrets are exposed in backend or frontend JavaScript.
-  - Native Microsoft Azure AD authentication & workspace permissions are delegated securely to Power BI.
-- **Informational Callout**: Includes a subtle user notice stating *"Power BI may require Microsoft authentication and appropriate report permissions."*
+- **Security & Authentication**:
+  - Does **NOT** use public "Publish to web".
+  - No credentials, tokens, or secrets are stored or exposed.
+  - Microsoft Azure AD authentication & workspace permissions are delegated securely to Power BI when the user clicks the CTA button.
+- **Informational Text**:
+  - *"Open the full interactive report to explore filters, charts and detailed Power BI insights."*
+  - *"Microsoft authentication may be required to access the interactive report."*
 
 ---
 
