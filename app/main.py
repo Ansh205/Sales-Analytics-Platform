@@ -1,6 +1,6 @@
 from pathlib import Path
 from fastapi import Depends, FastAPI, HTTPException, Request, status
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from sqlalchemy import text
@@ -40,13 +40,9 @@ app.include_router(analytics.router)
 @app.get("/", tags=["Root"])
 def read_root():
     """
-    API Root endpoint returning health status JSON payload.
-    Retained for 100% Phase 5 backward compatibility and API health verification.
+    Redirect root URL to the Executive Overview dashboard.
     """
-    return {
-        "message": "Sales Analytics Platform API is running",
-        "status": "healthy",
-    }
+    return RedirectResponse(url="/dashboard", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
 
 
 @app.get("/dashboard", response_class=HTMLResponse, tags=["Frontend"])

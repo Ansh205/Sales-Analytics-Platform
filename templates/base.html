@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Sales Analytics Platform — Executive dashboard for sales performance, profitability, customer insights, and regional analytics powered by FastAPI and PostgreSQL.">
   <title>{% block title %}Sales Analytics Platform{% endblock %}</title>
   
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2'><line x1='18' y1='20' x2='18' y2='10'/><line x1='12' y1='20' x2='12' y2='4'/><line x1='6' y1='20' x2='6' y2='14'/></svg>">
+
   <!-- Inter Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,10 +42,10 @@
         </div>
       </div>
 
-      <nav class="sidebar-nav">
+      <nav class="sidebar-nav" role="navigation" aria-label="Main Navigation">
         <ul>
           <li>
-            <a href="/dashboard" class="nav-item {% if active_page == 'overview' %}active{% endif %}">
+            <a href="/dashboard" class="nav-item {% if active_page == 'overview' %}active{% endif %}" {% if active_page == 'overview' %}aria-current="page"{% endif %}>
               <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="3" width="7" height="7"></rect>
                 <rect x="14" y="3" width="7" height="7"></rect>
@@ -52,7 +56,7 @@
             </a>
           </li>
           <li>
-            <a href="/products" class="nav-item {% if active_page == 'products' %}active{% endif %}">
+            <a href="/products" class="nav-item {% if active_page == 'products' %}active{% endif %}" {% if active_page == 'products' %}aria-current="page"{% endif %}>
               <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
               </svg>
@@ -60,7 +64,7 @@
             </a>
           </li>
           <li>
-            <a href="/customers" class="nav-item {% if active_page == 'customers' %}active{% endif %}">
+            <a href="/customers" class="nav-item {% if active_page == 'customers' %}active{% endif %}" {% if active_page == 'customers' %}aria-current="page"{% endif %}>
               <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                 <circle cx="9" cy="7" r="4"></circle>
@@ -71,7 +75,7 @@
             </a>
           </li>
           <li>
-            <a href="/regions" class="nav-item {% if active_page == 'regions' %}active{% endif %}">
+            <a href="/regions" class="nav-item {% if active_page == 'regions' %}active{% endif %}" {% if active_page == 'regions' %}aria-current="page"{% endif %}>
               <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <circle cx="12" cy="12" r="10"></circle>
                 <line x1="2" y1="12" x2="22" y2="12"></line>
@@ -81,7 +85,7 @@
             </a>
           </li>
           <li>
-            <a href="/powerbi" class="nav-item {% if active_page == 'powerbi' %}active{% endif %}">
+            <a href="/powerbi" class="nav-item {% if active_page == 'powerbi' %}active{% endif %}" {% if active_page == 'powerbi' %}aria-current="page"{% endif %}>
               <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
                 <line x1="8" y1="21" x2="16" y2="21"></line>
