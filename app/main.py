@@ -3,12 +3,15 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.routes import analytics
 
 app = FastAPI(
     title="Sales Analytics Platform API",
     description="Provides analytics from the Sales Analytics Platform PostgreSQL database",
     version="1.0.0",
 )
+
+app.include_router(analytics.router)
 
 
 @app.get("/")
