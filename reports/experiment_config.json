@@ -1,0 +1,41 @@
+{
+  "target": "Profit",
+  "features": {
+    "numerical": [
+      "Sales",
+      "Quantity",
+      "Discount"
+    ],
+    "categorical": [
+      "Category",
+      "Sub-Category",
+      "Segment",
+      "Region",
+      "Ship Mode",
+      "Order Month"
+    ]
+  },
+  "excluded_features": [
+    "Profit",
+    "Profit Margin",
+    "Profit Bucket",
+    "Row ID",
+    "Order ID",
+    "Customer ID",
+    "Customer Name",
+    "Product ID",
+    "Product Name",
+    "Ship Date",
+    "Shipping Days"
+  ],
+  "train_size": 8155,
+  "test_size": 2039,
+  "test_split_ratio": 0.2,
+  "cv_folds": 5,
+  "random_state": 42,
+  "metric_definitions": {
+    "MAE": "Mean Absolute Error: average magnitude of dollar prediction error.",
+    "RMSE": "Root Mean Squared Error: penalized metric emphasizing large loss outliers.",
+    "R2": "Coefficient of Determination: fraction of variance explained (can be negative if model is worse than mean)."
+  }
+}

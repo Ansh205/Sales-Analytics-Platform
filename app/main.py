@@ -7,13 +7,14 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.database import get_db
-from app.routes import analytics
+from app.routes import analytics, ml
 
 # Base directory using portable pathlib
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = BASE_DIR / "templates"
 STATIC_DIR = BASE_DIR / "static"
 IMAGES_DIR = BASE_DIR / "images"
+FIGURES_DIR = BASE_DIR / "reports" / "figures"
 
 app = FastAPI(
     title="Sales Analytics Platform API",
@@ -24,25 +25,33 @@ app = FastAPI(
 # Ensure directories exist before mounting
 STATIC_DIR.mkdir(parents=True, exist_ok=True)
 TEMPLATES_DIR.mkdir(parents=True, exist_ok=True)
+FIGURES_DIR.mkdir(parents=True, exist_ok=True)
 
 # Mount static files and images
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 if IMAGES_DIR.exists():
     app.mount("/images", StaticFiles(directory=str(IMAGES_DIR)), name="images")
+if FIGURES_DIR.exists():
+    app.mount("/reports/figures", StaticFiles(directory=str(FIGURES_DIR)), name="reports_figures")
 
 # Jinja2 template engine configuration
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 
-# Include analytics API router
+# Include API routers
 app.include_router(analytics.router)
+app.include_router(ml.router)
 
 
 @app.get("/", tags=["Root"])
-def read_root():
+def read_root(request: Request):
     """
-    Redirect root URL to the Executive Overview dashboard.
+    Root URL handler: redirects browser requests (Accept: text/html) to /dashboard,
+    and returns JSON health status for API test clients.
     """
-    return RedirectResponse(url="/dashboard", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
+    accept_header = request.headers.get("accept", "")
+    if "text/html" in accept_header:
+        return RedirectResponse(url="/dashboard", status_code=status.HTTP_307_TEMPORARY_REDIRECT)
+    return {"status": "healthy", "service": "Sales Analytics Platform API"}
 
 
 @app.get("/dashboard", response_class=HTMLResponse, tags=["Frontend"])
@@ -112,6 +121,20 @@ def render_powerbi(request: Request):
         request=request,
         name="powerbi.html",
         context={"active_page": "powerbi"}
+    )
+
+
+@app.get("/ml", response_class=HTMLResponse, tags=["Frontend"])
+@app.get("/ml/", response_class=HTMLResponse, include_in_schema=False)
+def render_ml(request: Request):
+    """
+    GET /ml
+    Renders the Machine Learning & Predictive Analytics Jinja2 HTML template.
+    """
+    return templates.TemplateResponse(
+        request=request,
+        name="ml.html",
+        context={"active_page": "ml"}
     )
 
 

@@ -1,0 +1,50 @@
+[
+  {
+    "Model":"Baseline (Mean Predictor)",
+    "CV_MAE_Mean":60.73,
+    "CV_MAE_Std":1.35,
+    "CV_RMSE_Mean":211.82,
+    "CV_RMSE_Std":15.18,
+    "CV_R2_Mean":-0.001,
+    "CV_R2_Std":0.0006,
+    "Test_MAE":66.77,
+    "Test_RMSE":299.79,
+    "Test_R2":-0.0017
+  },
+  {
+    "Model":"Regularized Linear Regression (Ridge)",
+    "CV_MAE_Mean":60.16,
+    "CV_MAE_Std":1.35,
+    "CV_RMSE_Mean":196.66,
+    "CV_RMSE_Std":44.13,
+    "CV_R2_Mean":0.1232,
+    "CV_R2_Std":0.3218,
+    "Test_MAE":61.66,
+    "Test_RMSE":215.38,
+    "Test_R2":0.483
+  },
+  {
+    "Model":"Tree-based (HistGradientBoosting)",
+    "CV_MAE_Mean":22.25,
+    "CV_MAE_Std":2.93,
+    "CV_RMSE_Mean":112.1,
+    "CV_RMSE_Std":43.29,
+    "CV_R2_Mean":0.7026,
+    "CV_R2_Std":0.1886,
+    "Test_MAE":28.38,
+    "Test_RMSE":210.47,
+    "Test_R2":0.5063
+  },
+  {
+    "Model":"Tree-based (Random Forest)",
+    "CV_MAE_Mean":24.02,
+    "CV_MAE_Std":2.73,
+    "CV_RMSE_Mean":140.88,
+    "CV_RMSE_Std":43.53,
+    "CV_R2_Mean":0.5373,
+    "CV_R2_Std":0.2439,
+    "Test_MAE":26.67,
+    "Test_RMSE":190.04,
+    "Test_R2":0.5975
+  }
+]

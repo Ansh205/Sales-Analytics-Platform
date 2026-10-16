@@ -1,0 +1,5 @@
+Model,CV_MAE_Mean,CV_MAE_Std,CV_RMSE_Mean,CV_RMSE_Std,CV_R2_Mean,CV_R2_Std,Test_MAE,Test_RMSE,Test_R2
+Baseline (Mean Predictor),60.73,1.35,211.82,15.18,-0.001,0.0006,66.77,299.79,-0.0017
+Regularized Linear Regression (Ridge),60.16,1.35,196.66,44.13,0.1232,0.3218,61.66,215.38,0.483
+Tree-based (HistGradientBoosting),22.25,2.93,112.1,43.29,0.7026,0.1886,28.38,210.47,0.5063
+Tree-based (Random Forest),24.02,2.73,140.88,43.53,0.5373,0.2439,26.67,190.04,0.5975

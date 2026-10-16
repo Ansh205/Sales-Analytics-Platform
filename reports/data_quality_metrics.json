@@ -1,0 +1,363 @@
+{
+  "summary": {
+    "total_rows": 10194,
+    "total_columns": 30,
+    "duplicate_rows": 0,
+    "numeric_columns_count": 10,
+    "categorical_columns_count": 20,
+    "date_columns_count": 0
+  },
+  "missing_summary": {},
+  "numerical_profile": {
+    "Row ID": {
+      "count": 10194,
+      "mean": 5097.5,
+      "std": 2942.898656087226,
+      "min": 1.0,
+      "q25": 2549.25,
+      "median": 5097.5,
+      "q75": 7645.75,
+      "max": 10194.0,
+      "skewness": 0.0,
+      "kurtosis": -1.2,
+      "iqr_lower_bound": -5095.5,
+      "iqr_upper_bound": 15290.5,
+      "outlier_count": 0,
+      "outlier_percentage": 0.0
+    },
+    "Sales": {
+      "count": 10194,
+      "mean": 228.22585386501862,
+      "std": 619.9068387792838,
+      "min": 0.4439999999999999,
+      "q25": 17.22,
+      "median": 53.91,
+      "q75": 209.5,
+      "max": 22638.48,
+      "skewness": 12.983925593888857,
+      "kurtosis": 306.36626961442505,
+      "iqr_lower_bound": -271.20000000000005,
+      "iqr_upper_bound": 497.92,
+      "outlier_count": 1183,
+      "outlier_percentage": 11.604865607219933
+    },
+    "Quantity": {
+      "count": 10194,
+      "mean": 3.791838336276241,
+      "std": 2.2283168430597318,
+      "min": 1.0,
+      "q25": 2.0,
+      "median": 3.0,
+      "q75": 5.0,
+      "max": 14.0,
+      "skewness": 1.2686325432209047,
+      "kurtosis": 1.9615258084299412,
+      "iqr_lower_bound": -2.5,
+      "iqr_upper_bound": 9.5,
+      "outlier_count": 175,
+      "outlier_percentage": 1.7166960957425936
+    },
+    "Discount": {
+      "count": 10194,
+      "mean": 0.15538453992544635,
+      "std": 0.2062485916706416,
+      "min": 0.0,
+      "q25": 0.0,
+      "median": 0.2,
+      "q75": 0.2,
+      "max": 0.8,
+      "skewness": 1.6874527785820006,
+      "kurtosis": 2.416290906732462,
+      "iqr_lower_bound": -0.30000000000000004,
+      "iqr_upper_bound": 0.5,
+      "outlier_count": 874,
+      "outlier_percentage": 8.573670786737296
+    },
+    "Profit": {
+      "count": 10194,
+      "mean": 28.67341716696095,
+      "std": 232.46511505662122,
+      "min": -6599.978000000001,
+      "q25": 1.7607999999999997,
+      "median": 8.69,
+      "q75": 29.297924999999985,
+      "max": 8399.975999999999,
+      "skewness": 7.60490589000479,
+      "kurtosis": 401.692916036238,
+      "iqr_lower_bound": -39.54488749999997,
+      "iqr_upper_bound": 70.60361249999997,
+      "outlier_count": 1913,
+      "outlier_percentage": 18.765940749460466
+    },
+    "Order Year": {
+      "count": 10194,
+      "mean": 2021.7201294879342,
+      "std": 1.1256108767607342,
+      "min": 2020.0,
+      "q25": 2021.0,
+      "median": 2022.0,
+      "q75": 2023.0,
+      "max": 2023.0,
+      "skewness": -0.28157263976599456,
+      "kurtosis": -1.312407418641459,
+      "iqr_lower_bound": 2018.0,
+      "iqr_upper_bound": 2026.0,
+      "outlier_count": 0,
+      "outlier_percentage": 0.0
+    },
+    "Order Quarter": {
+      "count": 10194,
+      "mean": 2.8826760839709635,
+      "std": 1.0603158280888387,
+      "min": 1.0,
+      "q25": 2.0,
+      "median": 3.0,
+      "q75": 4.0,
+      "max": 4.0,
+      "skewness": -0.4639301027880294,
+      "kurtosis": -1.0603521605412218,
+      "iqr_lower_bound": -1.0,
+      "iqr_upper_bound": 7.0,
+      "outlier_count": 0,
+      "outlier_percentage": 0.0
+    },
+    "Order Week": {
+      "count": 10194,
+      "mean": 32.10192269962723,
+      "std": 14.318198272044821,
+      "min": 1.0,
+      "q25": 20.25,
+      "median": 35.0,
+      "q75": 45.0,
+      "max": 53.0,
+      "skewness": -0.42249038438065534,
+      "kurtosis": -0.9977293543988921,
+      "iqr_lower_bound": -16.875,
+      "iqr_upper_bound": 82.125,
+      "outlier_count": 0,
+      "outlier_percentage": 0.0
+    },
+    "Shipping Days": {
+      "count": 10194,
+      "mean": 3.9609574259368254,
+      "std": 1.7431583703841842,
+      "min": 0.0,
+      "q25": 3.0,
+      "median": 4.0,
+      "q75": 5.0,
+      "max": 11.0,
+      "skewness": -0.4103360821179049,
+      "kurtosis": -0.23409278443706505,
+      "iqr_lower_bound": 0.0,
+      "iqr_upper_bound": 8.0,
+      "outlier_count": 2,
+      "outlier_percentage": 0.019619383951343928
+    },
+    "Profit Margin": {
+      "count": 10194,
+      "mean": 0.1222178440015601,
+      "std": 0.46488992201429735,
+      "min": -2.7500000000000013,
+      "q25": 0.0749999999999999,
+      "median": 0.2700000000000001,
+      "q75": 0.3625,
+      "max": 0.5,
+      "skewness": -2.8976491544407845,
+      "kurtosis": 10.218856119400488,
+      "iqr_lower_bound": -0.35625000000000023,
+      "iqr_upper_bound": 0.7937500000000002,
+      "outlier_count": 971,
+      "outlier_percentage": 9.525210908377476
+    }
+  },
+  "categorical_profile": {
+    "Order ID": {
+      "cardinality": 5111,
+      "top_value": "Us-2023-100111",
+      "top_frequency": 14,
+      "top_percentage": 0.13733568765940748,
+      "missing_count": 0
+    },
+    "Order Date": {
+      "cardinality": 1242,
+      "top_value": "2022-09-05",
+      "top_frequency": 38,
+      "top_percentage": 0.37276829507553466,
+      "missing_count": 0
+    },
+    "Ship Date": {
+      "cardinality": 1338,
+      "top_value": "2021-12-16",
+      "top_frequency": 38,
+      "top_percentage": 0.37276829507553466,
+      "missing_count": 0
+    },
+    "Ship Mode": {
+      "cardinality": 4,
+      "top_value": "Standard Class",
+      "top_frequency": 6120,
+      "top_percentage": 60.03531489111242,
+      "missing_count": 0
+    },
+    "Customer ID": {
+      "cardinality": 804,
+      "top_value": "Wb-21850",
+      "top_frequency": 41,
+      "top_percentage": 0.40219737100255054,
+      "missing_count": 0
+    },
+    "Customer Name": {
+      "cardinality": 800,
+      "top_value": "William Brown",
+      "top_frequency": 41,
+      "top_percentage": 0.40219737100255054,
+      "missing_count": 0
+    },
+    "Segment": {
+      "cardinality": 3,
+      "top_value": "Consumer",
+      "top_frequency": 5281,
+      "top_percentage": 51.80498332352364,
+      "missing_count": 0
+    },
+    "Country/Region": {
+      "cardinality": 2,
+      "top_value": "United States",
+      "top_frequency": 9994,
+      "top_percentage": 98.03806160486562,
+      "missing_count": 0
+    },
+    "City": {
+      "cardinality": 542,
+      "top_value": "New York City",
+      "top_frequency": 915,
+      "top_percentage": 8.975868157739846,
+      "missing_count": 0
+    },
+    "State/Province": {
+      "cardinality": 59,
+      "top_value": "California",
+      "top_frequency": 2001,
+      "top_percentage": 19.6291936433196,
+      "missing_count": 0
+    },
+    "Postal Code": {
+      "cardinality": 654,
+      "top_value": "10035",
+      "top_frequency": 263,
+      "top_percentage": 2.5799489896017267,
+      "missing_count": 0
+    },
+    "Region": {
+      "cardinality": 4,
+      "top_value": "West",
+      "top_frequency": 3253,
+      "top_percentage": 31.9109279968609,
+      "missing_count": 0
+    },
+    "Product ID": {
+      "cardinality": 1862,
+      "top_value": "Fur-Fu-10004270",
+      "top_frequency": 20,
+      "top_percentage": 0.1961938395134393,
+      "missing_count": 0
+    },
+    "Category": {
+      "cardinality": 3,
+      "top_value": "Office Supplies",
+      "top_frequency": 6128,
+      "top_percentage": 60.11379242691779,
+      "missing_count": 0
+    },
+    "Sub-Category": {
+      "cardinality": 17,
+      "top_value": "Binders",
+      "top_frequency": 1548,
+      "top_percentage": 15.1854031783402,
+      "missing_count": 0
+    },
+    "Product Name": {
+      "cardinality": 1849,
+      "top_value": "Staples",
+      "top_frequency": 50,
+      "top_percentage": 0.4904845987835982,
+      "missing_count": 0
+    },
+    "Order Month": {
+      "cardinality": 12,
+      "top_value": "November",
+      "top_frequency": 1474,
+      "top_percentage": 14.459485972140476,
+      "missing_count": 0
+    },
+    "Order Day": {
+      "cardinality": 7,
+      "top_value": "Monday",
+      "top_frequency": 1867,
+      "top_percentage": 18.31469491857956,
+      "missing_count": 0
+    },
+    "Sales Bucket": {
+      "cardinality": 4,
+      "top_value": "Low",
+      "top_frequency": 6378,
+      "top_percentage": 62.56621542083579,
+      "missing_count": 0
+    },
+    "Profit Bucket": {
+      "cardinality": 3,
+      "top_value": "Low Profit",
+      "top_frequency": 7387,
+      "top_percentage": 72.46419462428881,
+      "missing_count": 0
+    }
+  },
+  "target_correlations": {
+    "Row ID": {
+      "pearson": 0.003,
+      "spearman": -0.0003
+    },
+    "Sales": {
+      "pearson": 0.4815,
+      "spearman": 0.5204
+    },
+    "Quantity": {
+      "pearson": 0.0661,
+      "spearman": 0.2354
+    },
+    "Discount": {
+      "pearson": -0.2189,
+      "spearman": -0.5415
+    },
+    "Order Year": {
+      "pearson": 0.0046,
+      "spearman": -0.0037
+    },
+    "Order Quarter": {
+      "pearson": -0.0028,
+      "spearman": 0.0058
+    },
+    "Order Week": {
+      "pearson": -0.0046,
+      "spearman": 0.0082
+    },
+    "Shipping Days": {
+      "pearson": -0.0043,
+      "spearman": -0.0057
+    },
+    "Profit Margin": {
+      "pearson": 0.2232,
+      "spearman": 0.496
+    }
+  },
+  "integrity_checks": {
+    "negative_sales_count": 0,
+    "zero_sales_count": 0,
+    "negative_quantity_count": 0,
+    "discount_out_of_bounds": 0,
+    "loss_orders_count": 1901,
+    "loss_orders_percentage": 18.648224445752405,
+    "profitable_orders_count": 8228,
+    "break_even_orders_count": 65
+  }
+}

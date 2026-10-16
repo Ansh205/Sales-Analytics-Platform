@@ -1,0 +1,1068 @@
+{% extends "base.html" %}
+
+{% block title %}ML & Intelligence - Sales Analytics Platform{% endblock %}
+
+{% block extra_css %}
+<style>
+  /* ML & Intelligence Dedicated Page Styles */
+  .ml-section {
+    margin-bottom: 2.25rem;
+  }
+
+  .ml-section-header {
+    margin-bottom: 1.25rem;
+  }
+
+  .ml-section-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .ml-section-subtitle {
+    font-size: 0.875rem;
+    color: var(--muted);
+    margin-top: 0.25rem;
+  }
+
+  /* Predictor Grid */
+  .predictor-layout {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 992px) {
+    .predictor-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .predictor-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  @media (max-width: 640px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .form-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .form-input,
+  .form-select {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    background: #fff;
+    color: var(--text);
+    font-family: inherit;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .form-input:focus,
+  .form-select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
+
+  .slider-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .slider-input {
+    flex: 1;
+    cursor: pointer;
+  }
+
+  .slider-val {
+    font-weight: 700;
+    font-size: 0.95rem;
+    min-width: 3.5rem;
+    color: var(--primary);
+  }
+
+  .predict-btn {
+    grid-column: span 2;
+    margin-top: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+
+  .predict-btn:hover {
+    background: var(--primary-hover);
+  }
+
+  .predict-btn:active {
+    transform: scale(0.99);
+  }
+
+  /* Prediction Result Card */
+  .result-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(145deg, #ffffff, #f8fafc);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .result-profit-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .result-profit-val {
+    font-size: 2.75rem;
+    font-weight: 800;
+    color: var(--primary);
+    margin: 0.5rem 0;
+    transition: color 0.3s ease;
+  }
+
+  .result-profit-val.profit-positive {
+    color: #059669;
+  }
+
+  .result-profit-val.profit-negative {
+    color: #dc2626;
+  }
+
+  .risk-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .risk-badge.badge-healthy {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+  }
+
+  .risk-badge.badge-moderate {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+  }
+
+  .risk-badge.badge-danger {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+
+    0%,
+    100% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.75;
+    }
+  }
+
+  .result-stats-row {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    margin-top: 0.5rem;
+  }
+
+  .result-stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .result-stat-name {
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .result-stat-val {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* Metric KPI Grid */
+  .ml-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 1024px) {
+    .ml-kpi-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .ml-kpi-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .ml-kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .ml-kpi-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .ml-kpi-val {
+    font-size: 1.75rem;
+    font-weight: 800;
+    margin: 0.4rem 0 0.2rem 0;
+    color: var(--text);
+  }
+
+  .ml-kpi-sub {
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  /* Tables */
+  .ml-table-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .ml-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    text-align: left;
+  }
+
+  .ml-table th {
+    background: #f1f5f9;
+    padding: 0.85rem 1rem;
+    font-weight: 700;
+    color: #334155;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .ml-table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .ml-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  .ml-table tr.highlight-row {
+    background: #eff6ff;
+  }
+
+  .tag-badge {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .tag-best {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .tag-sig {
+    background: #dcfce7;
+    color: #15803d;
+  }
+
+  /* Disclaimer Banner */
+  .disclaimer-banner {
+    background: #fffbeb;
+    border: 1px solid #fef3c7;
+    border-left: 4px solid #f59e0b;
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.25rem;
+    margin-top: 1.25rem;
+    font-size: 0.85rem;
+    color: #92400e;
+    line-height: 1.5;
+  }
+
+  /* Gallery Grid */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 900px) {
+    .gallery-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .gallery-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .gallery-img-wrapper {
+    background: #f8fafc;
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 260px;
+  }
+
+  .gallery-img {
+    width: 100%;
+    height: auto;
+    max-height: 340px;
+    object-fit: contain;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .gallery-img:hover {
+    transform: scale(1.015);
+  }
+
+  .gallery-info {
+    padding: 1rem 1.25rem;
+  }
+
+  .gallery-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .gallery-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 0.25rem;
+    line-height: 1.4;
+  }
+
+  /* Explainer Cards */
+  .explainer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-top: 1.25rem;
+  }
+
+  @media (max-width: 768px) {
+    .explainer-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .explainer-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.15rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .explainer-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="dashboard-header" style="margin-bottom: 2rem;">
+  <div style="display: flex; align-items: center; gap: 0.75rem;">
+    <div style="background: #eff6ff; padding: 0.5rem; border-radius: 8px; color: var(--primary);">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path
+          d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83">
+        </path>
+        <circle cx="12" cy="12" r="3"></circle>
+      </svg>
+    </div>
+    <div>
+      <h1 class="dashboard-title" style="margin: 0;">Machine Learning & Predictive Intelligence</h1>
+      <p class="dashboard-description" style="margin: 0.2rem 0 0 0;">
+        Real-time order net profit prediction, margin risk classification, promotional discounting hypothesis testing,
+        and model benchmarks.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================== -->
+<!-- SECTION 1: LIVE INTERACTIVE ORDER PROFIT PREDICTOR             -->
+<!-- ============================================================== -->
+<section class="ml-section">
+  <div class="ml-section-header">
+    <div class="ml-section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <span>Interactive Order Profit Scoring & Risk Classifier</span>
+    </div>
+    <p class="ml-section-subtitle">
+      Powered by the trained <code>HistGradientBoostingRegressor</code> pipeline with zero target leakage. Simulates
+      live checkout pricing.
+    </p>
+  </div>
+
+  <div class="predictor-layout">
+    <!-- Form Card -->
+    <div class="predictor-card">
+      <form id="predictionForm" onsubmit="event.preventDefault(); runPrediction();">
+        <div class="form-grid">
+          <!-- Sales -->
+          <div class="form-group">
+            <label class="form-label" for="predSales">Gross Sales ($)</label>
+            <input type="number" id="predSales" class="form-input" min="1" max="30000" step="0.01" value="350.00"
+              required>
+          </div>
+
+          <!-- Quantity -->
+          <div class="form-group">
+            <label class="form-label" for="predQuantity">Quantity (Units)</label>
+            <input type="number" id="predQuantity" class="form-input" min="1" max="50" value="3" required>
+          </div>
+
+          <!-- Discount Slider -->
+          <div class="form-group" style="grid-column: span 2;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <label class="form-label" for="predDiscount">Promotional Discount</label>
+              <span class="slider-val" id="discountDisplay">15%</span>
+            </div>
+            <div class="slider-wrapper">
+              <input type="range" id="predDiscount" class="slider-input" min="0" max="0.80" step="0.05" value="0.15"
+                oninput="updateDiscountVal(this.value)">
+            </div>
+          </div>
+
+          <!-- Category -->
+          <div class="form-group">
+            <label class="form-label" for="predCategory">Product Category</label>
+            <select id="predCategory" class="form-select" onchange="syncSubCategories(this.value)">
+              <option value="Technology">Technology</option>
+              <option value="Furniture">Furniture</option>
+              <option value="Office Supplies">Office Supplies</option>
+            </select>
+          </div>
+
+          <!-- Sub-Category -->
+          <div class="form-group">
+            <label class="form-label" for="predSubCategory">Sub-Category</label>
+            <select id="predSubCategory" class="form-select">
+              <option value="Phones">Phones</option>
+              <option value="Accessories">Accessories</option>
+              <option value="Copiers">Copiers</option>
+              <option value="Machines">Machines</option>
+            </select>
+          </div>
+
+          <!-- Customer Segment -->
+          <div class="form-group">
+            <label class="form-label" for="predSegment">Customer Segment</label>
+            <select id="predSegment" class="form-select">
+              <option value="Consumer">Consumer</option>
+              <option value="Corporate">Corporate</option>
+              <option value="Home Office">Home Office</option>
+            </select>
+          </div>
+
+          <!-- Region -->
+          <div class="form-group">
+            <label class="form-label" for="predRegion">Region</label>
+            <select id="predRegion" class="form-select">
+              <option value="East">East</option>
+              <option value="Central">Central</option>
+              <option value="West">West</option>
+              <option value="South">South</option>
+            </select>
+          </div>
+
+          <!-- Ship Mode -->
+          <div class="form-group">
+            <label class="form-label" for="predShipMode">Shipping Mode</label>
+            <select id="predShipMode" class="form-select">
+              <option value="Standard Class">Standard Class</option>
+              <option value="Second Class">Second Class</option>
+              <option value="First Class">First Class</option>
+              <option value="Same Day">Same Day</option>
+            </select>
+          </div>
+
+          <!-- Month -->
+          <div class="form-group">
+            <label class="form-label" for="predMonth">Order Month</label>
+            <select id="predMonth" class="form-select">
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
+            </select>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="predict-btn" id="predictBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            <span>Score Transaction Profitability</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Prediction Output Card -->
+    <div class="predictor-card result-card" id="resultCard">
+      <span class="result-profit-label">Predicted Net Profit</span>
+      <div class="result-profit-val profit-positive" id="resProfitVal">+$54.20</div>
+
+      <div class="risk-badge badge-healthy" id="resRiskBadge">
+        <span style="font-size: 1.1em;">●</span>
+        <span id="resRiskText">HEALTHY_MARGIN</span>
+      </div>
+
+      <p style="font-size: 0.825rem; color: var(--muted); max-width: 280px; margin-bottom: 0.5rem;" id="resExplainText">
+        Estimated net profit based on product margin dynamics and low promotional markdown rate.
+      </p>
+
+      <div class="result-stats-row">
+        <div class="result-stat-item">
+          <span class="result-stat-name">Profit Margin</span>
+          <span class="result-stat-val" id="resMarginVal">15.5%</span>
+        </div>
+        <div class="result-stat-item">
+          <span class="result-stat-name">Model Confidence</span>
+          <span class="result-stat-val">Gradient Boost</span>
+        </div>
+        <div class="result-stat-item">
+          <span class="result-stat-name">CV Error (MAE)</span>
+          <span class="result-stat-val">±$22.25</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- SECTION 2: STATISTICAL HYPOTHESIS TESTING RESULTS              -->
+<!-- ============================================================== -->
+<section class="ml-section">
+  <div class="ml-section-header">
+    <div class="ml-section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <path d="M18 20V10M12 20V4M6 20v-6"></path>
+      </svg>
+      <span>Statistical Hypothesis Testing: Impact of Discounting</span>
+    </div>
+    <p class="ml-section-subtitle">
+      Formal investigation of: <em>"Average order profit differs between lower-discount (&le;20%) and higher-discount
+        (&gt;20%) orders."</em>
+    </p>
+  </div>
+
+  <!-- KPI Cards -->
+  <div class="ml-kpi-grid">
+    <div class="ml-kpi-card">
+      <div class="ml-kpi-title">Lower Discount (&le; 20%)</div>
+      <div class="ml-kpi-val" style="color: #059669;">+$48.79</div>
+      <div class="ml-kpi-sub">N = 8,779 orders | Median: +$11.49 | Loss Rate: 9.8%</div>
+    </div>
+
+    <div class="ml-kpi-card">
+      <div class="ml-kpi-title">Higher Discount (&gt; 20%)</div>
+      <div class="ml-kpi-val" style="color: #dc2626;">-$96.13</div>
+      <div class="ml-kpi-sub">N = 1,415 orders | Median: -$18.80 | Loss Rate: 73.7%</div>
+    </div>
+
+    <div class="ml-kpi-card">
+      <div class="ml-kpi-title">Mean Difference (Delta)</div>
+      <div class="ml-kpi-val" style="color: var(--primary);">+$144.92</div>
+      <div class="ml-kpi-sub">95% Conf. Interval: [+$127.42, +$162.41]</div>
+    </div>
+
+    <div class="ml-kpi-card">
+      <div class="ml-kpi-title">Welch's Two-Sample t</div>
+      <div class="ml-kpi-val">t = 16.25</div>
+      <div class="ml-kpi-sub">p = 4.66 &times; 10⁻⁵⁵ | Cohen's d: 0.638 (Medium-Large)</div>
+    </div>
+  </div>
+
+  <!-- Subgroup Analysis Table -->
+  <div class="ml-table-container">
+    <table class="ml-table">
+      <thead>
+        <tr>
+          <th>Product Category</th>
+          <th>Low Disc Sample</th>
+          <th>High Disc Sample</th>
+          <th>Low Disc Mean</th>
+          <th>High Disc Mean</th>
+          <th>Mean Profit Delta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Furniture</strong></td>
+          <td>1,646</td>
+          <td>555</td>
+          <td style="color: #059669;">+$45.37</td>
+          <td style="color: #dc2626;">-$99.02</td>
+          <td><strong>+$144.39</strong></td>
+
+        </tr>
+        <tr>
+          <td><strong>Office Supplies</strong></td>
+          <td>5,439</td>
+          <td>689</td>
+          <td style="color: #059669;">+$31.87</td>
+          <td style="color: #dc2626;">-$68.66</td>
+          <td><strong>+$100.53</strong></td>
+
+        </tr>
+        <tr>
+          <td><strong>Technology</strong></td>
+          <td>1,694</td>
+          <td>171</td>
+          <td style="color: #059669;">+$106.44</td>
+          <td style="color: #dc2626;">-$197.42</td>
+          <td><strong>+$303.85</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Observational Disclaimer -->
+  <div class="disclaimer-banner">
+    <strong>⚠️ Methodological Note on Causality:</strong>
+    While the profit degradation under discounts &gt;20% is statistically decisive across all merchandise lines (p &lt;
+    10⁻⁵⁰), these transactions reflect observational history rather than an A/B randomized experiment. Observed
+    differences may be confounded by pricing clearances on slow-moving inventory.
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- SECTION 3: MODEL COMPARISON & CROSS-VALIDATION SCOREBOARD      -->
+<!-- ============================================================== -->
+<section class="ml-section">
+  <div class="ml-section-header">
+    <div class="ml-section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <polygon
+          points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+        </polygon>
+      </svg>
+      <span>Machine Learning Model Comparison & Evaluation</span>
+    </div>
+    <p class="ml-section-subtitle">
+      5-Fold Cross-Validation on 80% train split (8,155 orders) and held-out evaluation on 20% test split (2,039
+      orders).
+    </p>
+  </div>
+
+  <div class="ml-table-container">
+    <table class="ml-table">
+      <thead>
+        <tr>
+          <th>Model Architecture</th>
+          <th>CV MAE (Mean ± Std)</th>
+          <th>CV RMSE (Mean ± Std)</th>
+          <th>CV R² (Mean ± Std)</th>
+          <th>Test Set MAE ($)</th>
+          <th>Test Set RMSE ($)</th>
+          <th>Test Set R²</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Baseline (Mean Predictor)</strong></td>
+          <td>$60.73 ± 1.35</td>
+          <td>$211.82 ± 15.18</td>
+          <td>-0.0010 ± 0.0006</td>
+          <td>$66.77</td>
+          <td>$299.79</td>
+          <td>-0.0017</td>
+          <td><span style="color: var(--muted); font-size: 0.8rem;">Benchmark</span></td>
+        </tr>
+        <tr>
+          <td><strong>Regularized Linear Regression (Ridge)</strong></td>
+          <td>$60.16 ± 1.35</td>
+          <td>$196.66 ± 44.13</td>
+          <td>0.1232 ± 0.3218</td>
+          <td>$61.66</td>
+          <td>$215.38</td>
+          <td>0.4830</td>
+          <td><span style="color: var(--muted); font-size: 0.8rem;">Linear Baseline</span></td>
+        </tr>
+        <tr class="highlight-row">
+          <td><strong>Tree-based (HistGradientBoosting)</strong></td>
+          <td><strong>$22.25 ± 2.93</strong></td>
+          <td><strong>$112.10 ± 43.29</strong></td>
+          <td><strong>0.7026 ± 0.1886</strong></td>
+          <td><strong>$28.38</strong></td>
+          <td><strong>$210.47</strong></td>
+          <td><strong>0.5063</strong></td>
+          <td><span class="tag-badge tag-best">Selected Best Model</span></td>
+        </tr>
+        <tr>
+          <td><strong>Tree-based (Random Forest)</strong></td>
+          <td>$24.02 ± 2.73</td>
+          <td>$140.88 ± 43.53</td>
+          <td>0.5373 ± 0.2439</td>
+          <td>$26.67</td>
+          <td>$190.04</td>
+          <td>0.5975</td>
+          <td><span style="color: var(--muted); font-size: 0.8rem;">Ensemble</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="explainer-grid">
+    <div class="explainer-card">
+      <div class="explainer-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        <span>Why Baseline R² is Negative (-0.0017)</span>
+      </div>
+      The mean baseline predicts the <em>training set</em> target mean. When evaluated on the held-out test set, slight
+      differences between train and test means cause the residual sum of squares to exceed the total sum of squares
+      ($R^2 = 1 - SS_{\text{res}} / SS_{\text{tot}} &lt; 0$). This reflects true sampling variation and is not hidden.
+    </div>
+
+    <div class="explainer-card">
+      <div class="explainer-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="16" x2="12" y2="12"></line>
+          <line x1="12" y1="8" x2="12.01" y2="8"></line>
+        </svg>
+        <span>Why Tree Models Outperformed Linear Regression (63% MAE Reduction)</span>
+      </div>
+      Net profit is fundamentally multiplicative: $\text{Profit} \approx \text{Sales} \times (1 - \text{Discount}) -
+      \text{COGS}$. Standard linear regression cannot capture this non-linear interaction without explicit product
+      terms. Tree models split the continuous feature space to identify steep margin collapse points.
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================== -->
+<!-- SECTION 4: VISUAL EXPERIMENTATION ARTIFACTS GALLERY            -->
+<!-- ============================================================== -->
+<section class="ml-section">
+  <div class="ml-section-header">
+    <div class="ml-section-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+        <circle cx="8.5" cy="8.5" r="1.5"></circle>
+        <polyline points="21 15 16 10 5 21"></polyline>
+      </svg>
+      <span>Visual Evaluation Artifacts</span>
+    </div>
+    <p class="ml-section-subtitle">
+      Artifacts generated during model evaluation, residual audits, and hypothesis testing.
+    </p>
+  </div>
+
+  <div class="gallery-grid">
+    <!-- Figure 1 -->
+    <div class="gallery-card">
+      <div class="gallery-img-wrapper">
+        <img src="/reports/figures/actual_vs_predicted.png" alt="Actual vs Predicted Profit" class="gallery-img"
+          onclick="window.open(this.src, '_blank')">
+      </div>
+      <div class="gallery-info">
+        <div class="gallery-title">Held-Out Test Set: Actual vs. Predicted Profit</div>
+        <div class="gallery-desc">Scatter plots against the ideal identity line ($y = \hat{y}$) contrasting the linear
+          model with tree ensembles.</div>
+      </div>
+    </div>
+
+    <!-- Figure 2 -->
+    <div class="gallery-card">
+      <div class="gallery-img-wrapper">
+        <img src="/reports/figures/residuals_analysis.png" alt="Residuals and Error Distribution" class="gallery-img"
+          onclick="window.open(this.src, '_blank')">
+      </div>
+      <div class="gallery-info">
+        <div class="gallery-title">Residual Error & Homoscedasticity Analysis</div>
+        <div class="gallery-desc">HistGradientBoosting residuals vs. predicted profit and centered error distribution.
+        </div>
+      </div>
+    </div>
+
+    <!-- Figure 3 -->
+    <div class="gallery-card">
+      <div class="gallery-img-wrapper">
+        <img src="/reports/figures/feature_importance.png" alt="Predictive Feature Importances" class="gallery-img"
+          onclick="window.open(this.src, '_blank')">
+      </div>
+      <div class="gallery-info">
+        <div class="gallery-title">Top Predictive Drivers of Order Profit</div>
+        <div class="gallery-desc">Gini feature importance ranking showing Sales, Discount rate, and Sub-Categories as
+          prime margin determinants.</div>
+      </div>
+    </div>
+
+    <!-- Figure 4 -->
+    <div class="gallery-card">
+      <div class="gallery-img-wrapper">
+        <img src="/reports/figures/discount_hypothesis_boxplot.png" alt="Discount Hypothesis Boxplot"
+          class="gallery-img" onclick="window.open(this.src, '_blank')">
+      </div>
+      <div class="gallery-info">
+        <div class="gallery-title">Promotional Discount Distribution Comparison</div>
+        <div class="gallery-desc">Interquartile ranges and probability density demonstrating steep net losses on orders
+          discounted above 20%.</div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Sub-categories mapped to categories
+  const subCategoryMap = {
+    "Technology": ["Phones", "Accessories", "Copiers", "Machines"],
+    "Furniture": ["Chairs", "Tables", "Bookcases", "Furnishings"],
+    "Office Supplies": ["Paper", "Binders", "Storage", "Appliances", "Art", "Envelopes", "Fasteners", "Labels", "Supplies"]
+  };
+
+  function syncSubCategories(category) {
+    const subSelect = document.getElementById('predSubCategory');
+    if (!subSelect) return;
+    subSelect.innerHTML = '';
+    const items = subCategoryMap[category] || ["General"];
+    items.forEach(item => {
+      const opt = document.createElement('option');
+      opt.value = item;
+      opt.textContent = item;
+      subSelect.appendChild(opt);
+    });
+  }
+
+  function updateDiscountVal(val) {
+    const display = document.getElementById('discountDisplay');
+    if (display) {
+      display.textContent = `${Math.round(val * 100)}%`;
+    }
+  }
+
+  async function runPrediction() {
+    const btn = document.getElementById('predictBtn');
+    const sales = parseFloat(document.getElementById('predSales').value);
+    const quantity = parseInt(document.getElementById('predQuantity').value, 10);
+    const discount = parseFloat(document.getElementById('predDiscount').value);
+    const category = document.getElementById('predCategory').value;
+    const sub_category = document.getElementById('predSubCategory').value;
+    const segment = document.getElementById('predSegment').value;
+    const region = document.getElementById('predRegion').value;
+    const ship_mode = document.getElementById('predShipMode').value;
+    const order_month = document.getElementById('predMonth').value;
+
+    const payload = {
+      sales,
+      quantity,
+      discount,
+      category,
+      sub_category,
+      segment,
+      region,
+      ship_mode,
+      order_month
+    };
+
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = `<span style="display:inline-block; animation:spin 1s linear infinite;">⏳</span> Scoring...`;
+    }
+
+    try {
+      const response = await fetch('/api/ml/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error(`Inference API error: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      renderPredictionResult(data, sales);
+    } catch (err) {
+      console.error(err);
+      alert('Prediction failed. Please ensure the backend server is running.');
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = `
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+          </svg>
+          <span>Score Transaction Profitability</span>
+        `;
+      }
+    }
+  }
+
+  function renderPredictionResult(data, sales) {
+    const profitVal = document.getElementById('resProfitVal');
+    const badge = document.getElementById('resRiskBadge');
+    const badgeText = document.getElementById('resRiskText');
+    const marginVal = document.getElementById('resMarginVal');
+    const explainText = document.getElementById('resExplainText');
+
+    const profit = data.predicted_profit;
+    const isLoss = data.is_predicted_loss;
+
+    // Profit Value Formatting
+    if (profitVal) {
+      profitVal.textContent = (profit >= 0 ? '+' : '') + `$${profit.toFixed(2)}`;
+      profitVal.className = 'result-profit-val ' + (profit >= 0 ? 'profit-positive' : 'profit-negative');
+    }
+
+    // Margin Calculation
+    if (marginVal) {
+      const marginPct = sales > 0 ? (profit / sales) * 100 : 0;
+      marginVal.textContent = `${marginPct.toFixed(1)}%`;
+      marginVal.style.color = marginPct >= 10 ? '#059669' : (marginPct >= 0 ? '#b45309' : '#dc2626');
+    }
+
+    // Risk Badge Formatting
+    if (badge && badgeText) {
+      if (isLoss) {
+        badge.className = 'risk-badge badge-danger';
+        badgeText.textContent = 'HIGH_MARGIN_RISK (Expected Loss)';
+        explainText.textContent = 'Heavy discount rate erodes product gross margin, resulting in an expected transaction net loss.';
+      } else if (profit < 20) {
+        badge.className = 'risk-badge badge-moderate';
+        badgeText.textContent = 'MODERATE_MARGIN (Low Profitability)';
+        explainText.textContent = 'Transaction generates slim positive operating profit. Sensitive to shipping or handling charges.';
+      } else {
+        badge.className = 'risk-badge badge-healthy';
+        badgeText.textContent = 'HEALTHY_MARGIN';
+        explainText.textContent = 'High expected contribution margin under current pricing and discount parameters.';
+      }
+    }
+  }
+
+  // Initialize subcategories on load
+  document.addEventListener('DOMContentLoaded', () => {
+    const cat = document.getElementById('predCategory');
+    if (cat) syncSubCategories(cat.value);
+  });
+</script>
+{% endblock %}

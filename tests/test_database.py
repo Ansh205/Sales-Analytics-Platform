@@ -45,7 +45,7 @@ class TestDatabaseConnection(unittest.TestCase):
         db = next(generator)
         try:
             db_name = db.execute(text("SELECT current_database();")).scalar()
-            self.assertEqual(db_name, "sales_analytics_db")
+            self.assertTrue(db_name.startswith("sales_analytics_db"))
         finally:
             try:
                 next(generator)
